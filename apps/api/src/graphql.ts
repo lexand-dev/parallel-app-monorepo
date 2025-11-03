@@ -10,10 +10,15 @@
 export type MemberRole = "ADMIN" | "MEMBER";
 export type TaskStatus = "BACKLOG" | "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
 
-export class AuthInput {
-    name?: Nullable<string>;
+export class SignUpInput {
+    name: string;
     password: string;
     email: string;
+}
+
+export class SignInInput {
+    email: string;
+    password: string;
 }
 
 export class ImageInput {
@@ -54,9 +59,9 @@ export abstract class IQuery {
 export abstract class IMutation {
     abstract logout(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
-    abstract signup(input: AuthInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    abstract signup(input: SignUpInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
-    abstract signin(email: string, password: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    abstract signin(input: SignInInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
     abstract deleteWorkspace(id: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 

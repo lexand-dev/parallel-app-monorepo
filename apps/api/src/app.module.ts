@@ -1,17 +1,20 @@
 import { join } from 'node:path';
 import { Module } from '@nestjs/common';
+import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { ZodValidationPipe } from 'nestjs-zod';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { APP_PIPE, APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
-import { ZodValidationPipe, ZodSerializerInterceptor } from 'nestjs-zod';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
 import { validateEnv } from './config/env';
 import { DatabaseModule } from '@/db/db.module';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { UsersModule } from '@/modules/users/users.module';
-import { HttpExceptionFilter } from '@/modules/auth/interceptor/http-exception.filter';
+import { MembersModule } from './modules/members/members.module';
+import { ProjectsModule } from './modules/projects/projects.module';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { WorkspacesModule } from './modules/workspaces/workspaces.module';
 
 @Module({
   imports: [
@@ -35,19 +38,15 @@ import { HttpExceptionFilter } from '@/modules/auth/interceptor/http-exception.f
     DatabaseModule,
     UsersModule,
     AuthModule,
+    MembersModule,
+    ProjectsModule,
+    TasksModule,
+    WorkspacesModule,
   ],
   providers: [
     {
       provide: APP_PIPE,
       useClass: ZodValidationPipe,
-    },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: ZodSerializerInterceptor,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: HttpExceptionFilter,
     },
   ],
 })

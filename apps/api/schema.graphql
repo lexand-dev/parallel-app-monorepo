@@ -36,8 +36,8 @@ type Query {
 
 type Mutation {
   logout: SuccessResponse
-  signup(input: AuthInput!): SuccessResponse
-  signin(email: String!, password: String!): SuccessResponse
+  signup(input: SignUpInput!): SuccessResponse
+  signin(input: SignInInput!): SuccessResponse
 
   deleteWorkspace(id: ID!): SuccessResponse
   joinWorkspace(inviteCode: String!, workspaceId: ID!): Workspace
@@ -76,10 +76,15 @@ type Mutation {
   bulkUpdateTasks(tasks: [BulkTask!]!): [Task]
 }
 
-input AuthInput {
-  name: String
+input SignUpInput {
+  name: String!
   password: String!
   email: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
 }
 
 input ImageInput {
