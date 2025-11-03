@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { env } from '../env';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(env.PORT);
+  console.log(`🚀 Starting in ${process.env.NODE_ENV} mode`);
+  await app.listen(process.env.PORT!);
 }
 bootstrap();

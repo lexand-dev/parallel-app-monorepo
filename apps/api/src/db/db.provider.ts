@@ -1,15 +1,9 @@
+import * as schema from './schema';
 import { Inject } from '@nestjs/common';
-import { db } from '.';
+import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 
-// Define a constant for the database provider token
-export const DB_PROVIDER = 'DbProvider';
+export const DB_CONNECTION = 'DB_CONNECTION';
 
-// Create a custom decorator to inject the database instance
-export const InjectDb = () => Inject(DB_PROVIDER);
-
-export const dbProvider = {
-  // Use the defined token for the provider
-  provide: DB_PROVIDER,
-  // Use the existing database instance
-  useValue: db,
-};
+// Custom provider
+export const InjectDb = () => Inject(DB_CONNECTION);
+export type DB = NeonHttpDatabase<typeof schema>;
