@@ -11,5 +11,5 @@
     "moduleResolution": "Bundler",
     "noEmit": true
   },
-  "include": ["src"]
+  "include": ["src/**/*", "*.ts", "*.tsx", "next-env.d.ts"]
 }
