@@ -10,8 +10,11 @@
     "module": "NodeNext",
     "moduleDetection": "force",
     "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
     "skipLibCheck": true,
     "strict": true,
     "target": "ES2022"
