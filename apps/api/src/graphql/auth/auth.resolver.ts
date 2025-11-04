@@ -1,10 +1,11 @@
 import { Response } from 'express';
-import { SuccessResponse } from '@/graphql';
-import { AuthService } from './auth.service';
-import { SignInDto, SignUpDto } from './dto/auth.dto';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
+import { SuccessResponse } from '@/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+
+import { AuthService } from './auth.service';
 import { AuthGuard } from '@/guards/auth.guard';
+import { SignInDto, SignUpDto } from './dto/auth.dto';
 
 @Resolver()
 export class AuthResolver {

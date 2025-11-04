@@ -1,10 +1,12 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
 import { Resolver, Query, Args, Context } from '@nestjs/graphql';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
+import { AuthGuard } from '@/guards/auth.guard';
 import { AnalyticsService } from './analytics.service';
 import { MembersService } from '../members/members.service';
 import { ProjectsService } from '../projects/projects.service';
 
+@UseGuards(AuthGuard)
 @Resolver('Analytics')
 export class AnalyticsResolver {
   constructor(

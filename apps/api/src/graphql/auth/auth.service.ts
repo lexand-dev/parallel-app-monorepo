@@ -1,8 +1,9 @@
 import * as bcrypt from 'bcrypt';
-import { SignInDtoType, SignUpDtoType } from './dto/auth.dto';
-import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+
+import { UsersService } from '../users/users.service';
+import { SignInDtoType, SignUpDtoType } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {

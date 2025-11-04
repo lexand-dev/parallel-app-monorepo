@@ -1,8 +1,9 @@
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
-import { MembersService } from './members.service';
-import { MemberRole } from '../../graphql';
 import { UseGuards } from '@nestjs/common';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+
+import { MemberRole } from '../../graphql';
 import { AuthGuard } from '@/guards/auth.guard';
+import { MembersService } from './members.service';
 import {
   UnauthorizedException,
   ForbiddenException,

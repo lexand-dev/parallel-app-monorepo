@@ -1,4 +1,3 @@
-import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   Mutation,
@@ -8,13 +7,15 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
-import { TasksService } from './tasks.service';
-import { BulkTask, TaskDto } from './entities/task.entity';
+import { AuthGuard } from '@/guards/auth.guard';
+import { BulkTask } from './entities/task.entity';
 import { CreateTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
+
+import { TasksService } from './tasks.service';
 import { MembersService } from '../members/members.service';
-import { AuthGuard } from '@/guards/auth.guard';
 import { ProjectsService } from '../projects/projects.service';
 
 @UseGuards(AuthGuard)

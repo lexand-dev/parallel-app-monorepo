@@ -1,5 +1,3 @@
-import type { FileUpload } from 'graphql-upload/processRequest.mjs';
-import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   Query,
@@ -9,15 +7,17 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
+import type { FileUpload } from 'graphql-upload/processRequest.mjs';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
+import { utapi } from '@/lib/uploathing';
+import { MemberRole } from '../../graphql';
 import { AuthGuard } from '@/guards/auth.guard';
+import { generateInviteCode } from '@/lib/utils';
 import { WorkspacesService } from './workspaces.service';
+import { MembersService } from '../members/members.service';
 import { CreateWorkspaceInputDto } from './dto/create-workspace.input';
 import { UpdateWorkspaceInputDto } from './dto/update-workspace.input';
-import { generateInviteCode } from '@/lib/utils';
-import { MemberRole } from '../../graphql';
-import { utapi } from '@/lib/uploathing';
-import { MembersService } from '../members/members.service';
 
 @UseGuards(AuthGuard)
 @Resolver('Workspace')
