@@ -4,6 +4,7 @@ import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { GraphQLModule } from '@nestjs/graphql';
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 
@@ -43,6 +44,7 @@ import { AnalyticsModule } from './graphql/analytics/analytics.module';
         path: join(process.cwd(), 'src/graphql.ts'),
         outputAs: 'class',
       },
+      resolvers: { Upload: GraphQLUpload },
     }),
     // Global Module
     DatabaseModule,

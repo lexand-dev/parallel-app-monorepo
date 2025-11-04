@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,7 @@ async function bootstrap() {
     origin: ['https://parallel-psi.vercel.app', 'http://localhost:3000'],
     credentials: true,
   });
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }));
   console.log(
     `🚀 Starting in ${process.env.NODE_ENV} mode, PORT ${process.env.PORT}`,
   );
