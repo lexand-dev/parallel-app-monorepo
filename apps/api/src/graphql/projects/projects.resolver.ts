@@ -7,6 +7,7 @@ import { ProjectsService } from './projects.service';
 import { MembersService } from '../members/members.service';
 import { UpdateProjectInputDto } from './dto/update-project.input';
 import { CreateProjectInputDto } from './dto/create-project.input';
+import { File } from 'node:buffer';
 
 @UseGuards(AuthGuard)
 @Resolver('Project')

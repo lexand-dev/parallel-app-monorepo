@@ -18,6 +18,7 @@ import { WorkspacesService } from './workspaces.service';
 import { MembersService } from '../members/members.service';
 import { CreateWorkspaceInputDto } from './dto/create-workspace.input';
 import { UpdateWorkspaceInputDto } from './dto/update-workspace.input';
+import { File } from 'node:buffer';
 
 @UseGuards(AuthGuard)
 @Resolver('Workspace')
