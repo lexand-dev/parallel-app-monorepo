@@ -1,3 +1,4 @@
+import { JSX } from "react";
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 
@@ -10,7 +11,7 @@ interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+const DashboardLayout = ({ children }: DashboardLayoutProps): JSX.Element => {
   return (
     <div className="min-h-screen">
       <CreateWorkspaceModal />

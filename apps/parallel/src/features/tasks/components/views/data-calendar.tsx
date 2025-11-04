@@ -67,7 +67,7 @@ const CustomToolbar = ({ date, onNavigate }: CustomToolbarProps) => {
 
 export const DataCalendar = ({ data }: DataCalendarProps) => {
   const [value, setValue] = useState(
-    data.length > 0 ? new Date(data[0].dueDate) : new Date()
+    data.length > 0 && data[0] ? new Date(data[0].dueDate) : new Date()
   );
 
   const events = data.map((task) => ({

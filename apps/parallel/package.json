@@ -1,6 +1,7 @@
 {
   "name": "parallel-app",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -52,9 +53,9 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.29",
-    "@types/react": "^19.1.6",
+    "@types/react": "19.1.0",
     "@types/react-big-calendar": "^1.16.2",
-    "@types/react-dom": "^19.1.5",
+    "@types/react-dom": "19.1.1",
     "@workspace/eslint-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "eslint": "^9.28.0",
