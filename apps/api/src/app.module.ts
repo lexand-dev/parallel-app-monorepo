@@ -34,11 +34,7 @@ import { AnalyticsModule } from './graphql/analytics/analytics.module';
         WorkspacesModule,
         AnalyticsModule,
       ],
-      /*       cors: {
-        origin: '*',
-        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-        credentials: true,
-      }, */
+      context: ({ req, res }) => ({ req, res }),
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       // Schema first:

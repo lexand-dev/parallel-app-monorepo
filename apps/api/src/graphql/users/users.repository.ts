@@ -21,4 +21,10 @@ export class UsersRepository {
       where: eq(users.email, email),
     });
   }
+
+  async findById(id: string) {
+    return this.db.query.users.findFirst({
+      where: eq(users.id, id),
+    });
+  }
 }

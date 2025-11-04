@@ -45,4 +45,12 @@ export class AuthService {
 
     return token;
   }
+
+  async verifyToken(token: string) {
+    return this.jwtService.verifyAsync(token);
+  }
+
+  async current(id: string) {
+    return this.userService.findById(id);
+  }
 }

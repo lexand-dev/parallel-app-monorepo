@@ -58,6 +58,8 @@ export abstract class IQuery {
 
     abstract getTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
+    abstract current(): Nullable<User> | Promise<Nullable<User>>;
+
     abstract getWorkspaces(): Nullable<Nullable<Workspace>[]> | Promise<Nullable<Nullable<Workspace>[]>>;
 
     abstract getWorkspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;

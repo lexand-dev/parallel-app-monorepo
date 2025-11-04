@@ -7,7 +7,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.enableCors({
     origin: ['https://parallel-psi.vercel.app', 'http://localhost:3000'],
-    credentials: true, // permite enviar cookies
+    credentials: true,
   });
   console.log(
     `🚀 Starting in ${process.env.NODE_ENV} mode, PORT ${process.env.PORT}`,
