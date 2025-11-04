@@ -31,7 +31,8 @@ export class MembersResolver {
     if (!member) {
       throw new ForbiddenException('Not a member of this workspace');
     }
-    const members = await this.memberService.getMembers(workspaceId);
+    const members =
+      await this.memberService.getMembersByWorkspaceId(workspaceId);
     return members.map((member) => ({
       id: member.userId,
       name: member.name,
@@ -52,7 +53,7 @@ export class MembersResolver {
     }
 
     const allMemberInWorkspace =
-      await this.memberService.getMembers(workspaceId);
+      await this.memberService.getMembersByWorkspaceId(workspaceId);
     if (allMemberInWorkspace.length <= 1) {
       throw new BadRequestException(
         'Cannot remove the last member from a workspace',
@@ -88,7 +89,7 @@ export class MembersResolver {
     }
 
     const allMemberInWorkspace =
-      await this.memberService.getMembers(workspaceId);
+      await this.memberService.getMembersByWorkspaceId(workspaceId);
     if (allMemberInWorkspace.length <= 1) {
       throw new BadRequestException(
         'Cannot update role of the last member in a workspace',

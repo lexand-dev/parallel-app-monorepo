@@ -145,6 +145,8 @@ export class Task {
     assigneeId?: Nullable<string>;
     description?: Nullable<string>;
     position?: Nullable<number>;
+    assignee?: Nullable<User>;
+    project?: Nullable<Project>;
 }
 
 export class User {

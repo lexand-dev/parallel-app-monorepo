@@ -1,6 +1,14 @@
 import type { FileUpload } from 'graphql-upload/processRequest.mjs';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Context,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 
 import { AuthGuard } from '@/guards/auth.guard';
 import { WorkspacesService } from './workspaces.service';
@@ -316,5 +324,37 @@ export class WorkspacesResolver {
       userId: updatedWorkspace.userId,
       inviteCode: updatedWorkspace.inviteCode,
     };
+  }
+
+  @ResolveField('members')
+  async getMembers(
+    @Parent() workspace: { id: string },
+    @Context() context: any,
+  ) {
+    const userId = context.user.sub;
+    if (!userId) {
+      throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
+    }
+
+    const member = await this.membersService.getMember({
+      workspaceId: workspace.id,
+      userId: userId,
+    });
+    if (!member) {
+      throw new HttpException(
+        'Not a member of this workspace',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const members = await this.membersService.getMembersByWorkspaceId(
+      workspace.id,
+    );
+    return members.map((member) => ({
+      id: member.userId,
+      name: member.name,
+      role: member.role,
+      email: member.email,
+    }));
   }
 }

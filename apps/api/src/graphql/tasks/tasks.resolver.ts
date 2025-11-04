@@ -1,17 +1,29 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  Context,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 
 import { TasksService } from './tasks.service';
-import { BulkTask } from './entities/task.entity';
+import { BulkTask, TaskDto } from './entities/task.entity';
 import { CreateTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 import { MembersService } from '../members/members.service';
+import { AuthGuard } from '@/guards/auth.guard';
+import { ProjectsService } from '../projects/projects.service';
 
+@UseGuards(AuthGuard)
 @Resolver('Task')
 export class TasksResolver {
   constructor(
     private readonly tasksService: TasksService,
     private readonly membersService: MembersService,
+    private readonly projectsService: ProjectsService,
   ) {}
 
   @Mutation('createTask')
@@ -194,5 +206,103 @@ export class TasksResolver {
     }));
 
     return formattedTasks;
+  }
+
+  @Query('getTask')
+  async getTask(@Args('id') id: string, @Context() context: any) {
+    const userId = context.user.sub;
+    if (!userId) {
+      throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
+    }
+
+    const task = await this.tasksService.getTaskById(id);
+    if (!task) {
+      throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+    }
+
+    const member = await this.membersService.getMember({
+      workspaceId: task.workspaceId,
+      userId: userId,
+    });
+    if (!member) {
+      throw new HttpException(
+        'Not a member of this workspace',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    return {
+      ...task,
+      dueDate: task.dueDate ? task.dueDate.toISOString() : null,
+    };
+  }
+
+  @ResolveField('assignee')
+  async getAssignee(
+    @Parent()
+    task: {
+      workspaceId: string;
+      assigneeId: string;
+    },
+    @Context() context: any,
+  ) {
+    const userId = context.user.sub;
+    if (!userId) {
+      throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
+    }
+
+    const member = await this.membersService.getMember({
+      workspaceId: task.workspaceId,
+      userId: userId,
+    });
+    if (!member) {
+      throw new HttpException(
+        'Not a member of this workspace',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const assignee = await this.membersService.getMemberById(task.assigneeId);
+
+    return {
+      id: assignee.id,
+      name: assignee.name,
+      email: assignee.email,
+    };
+  }
+
+  @ResolveField('project')
+  async getProject(
+    @Parent()
+    task: {
+      workspaceId: string;
+      projectId: string;
+    },
+    @Context() context: any,
+  ) {
+    const userId = context.user.sub;
+    if (!userId) {
+      throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
+    }
+
+    const member = await this.membersService.getMember({
+      workspaceId: task.workspaceId,
+      userId: userId,
+    });
+    if (!member) {
+      throw new HttpException(
+        'Not a member of this workspace',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const project = await this.projectsService.getProjectById(task.projectId);
+
+    return {
+      id: project.id,
+      name: project.name,
+      image: project.image,
+      workspaceId: project.workspaceId,
+    };
   }
 }

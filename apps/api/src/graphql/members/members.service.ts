@@ -8,7 +8,7 @@ import { and, eq } from 'drizzle-orm';
 export class MembersService {
   constructor(@InjectDb() private readonly db: DB) {}
 
-  async getMembers(workspaceId: MemberInput['workspaceId']) {
+  async getMembersByWorkspaceId(workspaceId: MemberInput['workspaceId']) {
     const members = await this.db
       .select({
         workspaceId: workspaceMembers.workspaceId,

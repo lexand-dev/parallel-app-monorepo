@@ -48,13 +48,16 @@ export class ProjectsResolver {
   }
 
   @Query('getProject')
-  async getProject(@Args('projectId') projectId: string, @Context() ctx: any) {
+  async getProjectById(
+    @Args('projectId') projectId: string,
+    @Context() ctx: any,
+  ) {
     const userId = ctx.user.sub;
     if (!userId) {
       throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
     }
 
-    const project = await this.projectsService.getProject(projectId);
+    const project = await this.projectsService.getProjectById(projectId);
     if (!project) {
       throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
     }
@@ -161,7 +164,7 @@ export class ProjectsResolver {
       throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
     }
 
-    const project = await this.projectsService.getProject(id);
+    const project = await this.projectsService.getProjectById(id);
     if (!project) {
       throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
     }
@@ -232,7 +235,7 @@ export class ProjectsResolver {
       throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
     }
 
-    const project = await this.projectsService.getProject(id);
+    const project = await this.projectsService.getProjectById(id);
     if (!project) {
       throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
     }

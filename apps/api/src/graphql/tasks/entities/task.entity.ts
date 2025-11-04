@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createZodDto } from 'nestjs-zod';
 
 export enum TaskStatus {
   BACKLOG = 'BACKLOG',
@@ -34,3 +35,5 @@ export type BulkTask = {
   status: TaskStatus;
   position: number;
 };
+
+export class TaskDto extends createZodDto(TaskSchema) {}

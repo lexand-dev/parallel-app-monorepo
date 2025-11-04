@@ -19,7 +19,7 @@ export class ProjectsService {
     return projectsList;
   }
 
-  async getProject(projectId: string) {
+  async getProjectById(projectId: string) {
     const [project] = await this.db
       .select()
       .from(projects)

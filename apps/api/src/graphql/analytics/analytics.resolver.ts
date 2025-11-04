@@ -23,7 +23,7 @@ export class AnalyticsResolver {
       throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
     }
 
-    const project = await this.projectsService.getProject(projectId);
+    const project = await this.projectsService.getProjectById(projectId);
 
     const member = await this.membersService.getMember({
       workspaceId: project.workspaceId,

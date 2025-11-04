@@ -42,6 +42,8 @@ type Task {
   assigneeId: String
   description: String
   position: Int
+  assignee: User
+  project: Project
 }
 
 input BulkTask {
