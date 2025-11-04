@@ -9,7 +9,7 @@ import {
 } from '@nestjs/graphql';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
-import { AuthGuard } from '@/guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { BulkTask } from './entities/task.entity';
 import { CreateTaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';

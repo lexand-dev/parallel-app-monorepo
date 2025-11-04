@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 
 import { utapi } from '@/lib/uploathing';
-import { AuthGuard } from '@/guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { ProjectsService } from './projects.service';
 import { MembersService } from '../members/members.service';
 import { UpdateProjectInputDto } from './dto/update-project.input';

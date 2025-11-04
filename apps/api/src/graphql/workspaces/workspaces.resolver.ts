@@ -12,7 +12,7 @@ import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
 import { utapi } from '@/lib/uploathing';
 import { MemberRole } from '../../graphql';
-import { AuthGuard } from '@/guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { generateInviteCode } from '@/lib/utils';
 import { WorkspacesService } from './workspaces.service';
 import { MembersService } from '../members/members.service';

@@ -1,10 +1,10 @@
 import { Response } from 'express';
 import { UseGuards } from '@nestjs/common';
-import { SuccessResponse } from '@/graphql';
+
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { AuthService } from './auth.service';
-import { AuthGuard } from '@/guards/auth.guard';
+import { AuthGuard } from '../../guards/auth.guard';
 import { SignInDto, SignUpDto } from './dto/auth.dto';
 
 @Resolver()
@@ -15,7 +15,7 @@ export class AuthResolver {
   async signup(
     @Args('input') args: SignUpDto,
     @Context() context: { res: Response },
-  ): Promise<SuccessResponse> {
+  ) {
     const token = await this.authService.register(args);
     context.res.cookie('auth_token', token, {
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
@@ -30,7 +30,7 @@ export class AuthResolver {
   async signin(
     @Args('input') args: SignInDto,
     @Context() context: { res: Response },
-  ): Promise<SuccessResponse> {
+  ) {
     const token = await this.authService.login(args);
     context.res.cookie('auth_token', token, {
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
