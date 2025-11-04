@@ -11,7 +11,7 @@ const nextConfig = {
     return [
       {
         source: "/api/graphql",
-        destination: `${process.env.API_URL}/graphql`
+        destination: `https://api-gql-production.up.railway.app/graphql`
       }
     ];
   }
