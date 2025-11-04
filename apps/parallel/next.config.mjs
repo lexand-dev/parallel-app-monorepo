@@ -11,8 +11,7 @@ const nextConfig = {
     return [
       {
         source: "/api/graphql",
-        destination: "http://localhost:4000/graphql"
-        /* destination: "https://parallel-api-4rt0.onrender.com/graphql" */
+        destination: `${process.env.API_URL}/graphql`
       }
     ];
   }
