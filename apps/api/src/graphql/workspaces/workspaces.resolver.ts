@@ -6,29 +6,23 @@ import { UpdateWorkspaceInput } from './dto/update-workspace.input';
 @Resolver('Workspace')
 export class WorkspacesResolver {
   constructor(private readonly workspacesService: WorkspacesService) {}
-
-  @Mutation('createWorkspace')
-  create(@Args('createWorkspaceInput') createWorkspaceInput: CreateWorkspaceInput) {
-    return this.workspacesService.create(createWorkspaceInput);
-  }
-
-  @Query('workspaces')
-  findAll() {
+  @Query('getWorkspaces')
+  getWorkspaces() {
     return this.workspacesService.findAll();
   }
 
-  @Query('workspace')
-  findOne(@Args('id') id: number) {
-    return this.workspacesService.findOne(id);
+  @Query('getWorkspace')
+  getWorkspace(@Args('id') id: string) {
+    // return this.workspacesService.findById(id);
   }
 
-  @Mutation('updateWorkspace')
-  update(@Args('updateWorkspaceInput') updateWorkspaceInput: UpdateWorkspaceInput) {
-    return this.workspacesService.update(updateWorkspaceInput.id, updateWorkspaceInput);
+  @Mutation('createWorkspace')
+  createWorkspace(@Args('name') name: string, @Args('image') image?: any) {
+    //return this.workspacesService.create(name, image);
   }
 
-  @Mutation('removeWorkspace')
-  remove(@Args('id') id: number) {
-    return this.workspacesService.remove(id);
+  @Mutation('deleteWorkspace')
+  deleteWorkspace(@Args('id') id: string) {
+    // return this.workspacesService.delete(id);
   }
 }

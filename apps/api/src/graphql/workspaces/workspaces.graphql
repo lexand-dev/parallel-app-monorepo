@@ -1,24 +1,31 @@
-type Workspace {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input CreateWorkspaceInput {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input UpdateWorkspaceInput {
-  id: Int!
-}
-
 type Query {
-  workspaces: [Workspace]!
-  workspace(id: Int!): Workspace
+  getWorkspaces: [Workspace]
+  getWorkspace(id: ID!): Workspace
+  getWorkspaceInfo(id: ID!): WorkspaceInfo
 }
 
 type Mutation {
-  createWorkspace(createWorkspaceInput: CreateWorkspaceInput!): Workspace!
-  updateWorkspace(updateWorkspaceInput: UpdateWorkspaceInput!): Workspace!
-  removeWorkspace(id: Int!): Workspace
+  createWorkspace(name: String!, image: ImageInput): Workspace
+  updateWorkspace(id: ID!, name: String!, image: ImageInput): Workspace
+  deleteWorkspace(id: ID!): SuccessResponse
+  joinWorkspace(inviteCode: String!, workspaceId: ID!): Workspace
+  resetInviteCode(id: ID!): Workspace
+}
+
+type Workspace {
+  id: ID
+  name: String
+  image: String
+  userId: String
+  inviteCode: String
+  members: [Member]
+}
+
+type WorkspaceInfo {
+  name: String
+}
+
+input ImageInput {
+  file: Upload
+  url: String
 }

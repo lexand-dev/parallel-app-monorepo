@@ -1,0 +1,16 @@
+type Mutation {
+  signup(input: SignUpInput!): SuccessResponse
+  signin(input: SignInInput!): SuccessResponse
+  logout: SuccessResponse
+}
+
+input SignUpInput {
+  name: String!
+  password: String!
+  email: String!
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}

@@ -1,11 +1,15 @@
 import * as bcrypt from 'bcrypt';
 import { SignInDtoType, SignUpDtoType } from './dto/auth.dto';
 import { UsersService } from '../users/users.service';
+import { JwtService } from '@nestjs/jwt';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async register({ name, email, password }: SignUpDtoType) {
     const hashedPW = await bcrypt.hash(password, 10);
@@ -15,7 +19,12 @@ export class AuthService {
     if (existingUser) {
       throw new HttpException('Email already exists', HttpStatus.CONFLICT);
     }
-    return this.userService.create(name, email, hashedPW);
+    const user = await this.userService.create(name, email, hashedPW);
+
+    const payload = { sub: user.id };
+    const token = await this.jwtService.signAsync(payload);
+
+    return token;
   }
 
   async login({ email, password }: SignInDtoType) {
@@ -31,6 +40,9 @@ export class AuthService {
       throw new HttpException('Invalid Credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    return user;
+    const payload = { sub: user.id };
+    const token = await this.jwtService.signAsync(payload);
+
+    return token;
   }
 }

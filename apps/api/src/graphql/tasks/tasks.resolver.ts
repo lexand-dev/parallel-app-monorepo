@@ -6,7 +6,7 @@ import { UpdateTaskInput } from './dto/update-task.input';
 @Resolver('Task')
 export class TasksResolver {
   constructor(private readonly tasksService: TasksService) {}
-
+  /* 
   @Mutation('createTask')
   create(@Args('createTaskInput') createTaskInput: CreateTaskInput) {
     return this.tasksService.create(createTaskInput);
@@ -30,5 +30,5 @@ export class TasksResolver {
   @Mutation('removeTask')
   remove(@Args('id') id: number) {
     return this.tasksService.remove(id);
-  }
+  } */
 }

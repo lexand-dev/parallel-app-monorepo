@@ -4,23 +4,15 @@ import { UpdateMemberInput } from './dto/update-member.input';
 
 @Injectable()
 export class MembersService {
-  create(createMemberInput: CreateMemberInput) {
+  getMembers(createMemberInput: CreateMemberInput) {
     return 'This action adds a new member';
   }
 
-  findAll() {
-    return `This action returns all members`;
+  updateRole(memberId: string, workspaceId: string, role: string) {
+    return `This action updates a #${memberId} member`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} member`;
-  }
-
-  update(id: number, updateMemberInput: UpdateMemberInput) {
-    return `This action updates a #${id} member`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+  removeMember(memberId: string, workspaceId: string) {
+    return `This action removes a #${memberId} member`;
   }
 }

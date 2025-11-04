@@ -7,7 +7,7 @@ import { UpdateProjectInput } from './dto/update-project.input';
 export class ProjectsResolver {
   constructor(private readonly projectsService: ProjectsService) {}
 
-  @Mutation('createProject')
+  /*   @Mutation('createProject')
   create(@Args('createProjectInput') createProjectInput: CreateProjectInput) {
     return this.projectsService.create(createProjectInput);
   }
@@ -30,5 +30,5 @@ export class ProjectsResolver {
   @Mutation('removeProject')
   remove(@Args('id') id: number) {
     return this.projectsService.remove(id);
-  }
+  } */
 }

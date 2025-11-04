@@ -1,24 +1,24 @@
-type Member {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input CreateMemberInput {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input UpdateMemberInput {
-  id: Int!
-}
-
 type Query {
-  members: [Member]!
-  member(id: Int!): Member
+  getMembers(workspaceId: ID!): [Member]
 }
 
 type Mutation {
-  createMember(createMemberInput: CreateMemberInput!): Member!
-  updateMember(updateMemberInput: UpdateMemberInput!): Member!
-  removeMember(id: Int!): Member
+  removeMember(memberId: ID!, workspaceId: ID!): SuccessResponse
+  updateRole(
+    memberId: ID!
+    role: MemberRole!
+    workspaceId: ID!
+  ): SuccessResponse
+}
+
+type Member {
+  id: ID
+  name: String
+  role: MemberRole
+  email: String
+}
+
+enum MemberRole {
+  ADMIN
+  MEMBER
 }

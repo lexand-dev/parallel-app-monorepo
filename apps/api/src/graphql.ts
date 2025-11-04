@@ -7,8 +7,19 @@
 
 /* tslint:disable */
 /* eslint-disable */
-export type MemberRole = "ADMIN" | "MEMBER";
-export type TaskStatus = "BACKLOG" | "TODO" | "IN_PROGRESS" | "IN_REVIEW" | "DONE";
+
+export enum MemberRole {
+    ADMIN = "ADMIN",
+    MEMBER = "MEMBER"
+}
+
+export enum TaskStatus {
+    BACKLOG = "BACKLOG",
+    TODO = "TODO",
+    IN_PROGRESS = "IN_PROGRESS",
+    IN_REVIEW = "IN_REVIEW",
+    DONE = "DONE"
+}
 
 export class SignUpInput {
     name: string;
@@ -21,25 +32,21 @@ export class SignInInput {
     password: string;
 }
 
-export class ImageInput {
-    file?: Nullable<Upload>;
-    url?: Nullable<string>;
-}
-
 export class BulkTask {
     id: string;
     status?: Nullable<TaskStatus>;
     position?: Nullable<number>;
 }
 
+export class ImageInput {
+    file?: Nullable<Upload>;
+    url?: Nullable<string>;
+}
+
 export abstract class IQuery {
-    abstract current(): Nullable<User> | Promise<Nullable<User>>;
+    abstract getAnalyticsProject(projectId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
 
-    abstract getWorkspaces(): Nullable<Nullable<Workspace>[]> | Promise<Nullable<Nullable<Workspace>[]>>;
-
-    abstract getWorkspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract getWorkspaceInfo(id: string): Nullable<WorkspaceInfo> | Promise<Nullable<WorkspaceInfo>>;
+    abstract getAnalyticsWorkspace(workspaceId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
 
     abstract getMembers(workspaceId: string): Nullable<Nullable<Member>[]> | Promise<Nullable<Nullable<Member>[]>>;
 
@@ -51,27 +58,32 @@ export abstract class IQuery {
 
     abstract getTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
-    abstract getAnalyticsProject(projectId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
+    abstract getWorkspaces(): Nullable<Nullable<Workspace>[]> | Promise<Nullable<Nullable<Workspace>[]>>;
 
-    abstract getAnalyticsWorkspace(workspaceId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
+    abstract getWorkspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+
+    abstract getWorkspaceInfo(id: string): Nullable<WorkspaceInfo> | Promise<Nullable<WorkspaceInfo>>;
+}
+
+export class Analytics {
+    taskCount?: Nullable<number>;
+    taskDifference?: Nullable<number>;
+    assignedTaskCount?: Nullable<number>;
+    assignedTaskDifference?: Nullable<number>;
+    completedTaskCount?: Nullable<number>;
+    completedTaskDifference?: Nullable<number>;
+    incompleteTaskCount?: Nullable<number>;
+    incompleteTaskDifference?: Nullable<number>;
+    overdueTaskCount?: Nullable<number>;
+    overdueTaskDifference?: Nullable<number>;
 }
 
 export abstract class IMutation {
-    abstract logout(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
     abstract signup(input: SignUpInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
     abstract signin(input: SignInInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
-    abstract deleteWorkspace(id: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract joinWorkspace(inviteCode: string, workspaceId: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract resetInviteCode(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract createWorkspace(name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract updateWorkspace(id: string, name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+    abstract logout(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
     abstract removeMember(memberId: string, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
 
@@ -90,6 +102,16 @@ export abstract class IMutation {
     abstract deleteTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
 
     abstract bulkUpdateTasks(tasks: BulkTask[]): Nullable<Nullable<Task>[]> | Promise<Nullable<Nullable<Task>[]>>;
+
+    abstract createWorkspace(name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+
+    abstract updateWorkspace(id: string, name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+
+    abstract deleteWorkspace(id: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+
+    abstract joinWorkspace(inviteCode: string, workspaceId: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+
+    abstract resetInviteCode(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
 }
 
 export class SuccessResponse {
@@ -97,30 +119,11 @@ export class SuccessResponse {
     message?: Nullable<string>;
 }
 
-export class WorkspaceInfo {
-    name?: Nullable<string>;
-}
-
-export class User {
-    id?: Nullable<string>;
-    name?: Nullable<string>;
-    email?: Nullable<string>;
-}
-
 export class Member {
     id?: Nullable<string>;
     name?: Nullable<string>;
     role?: Nullable<MemberRole>;
     email?: Nullable<string>;
-}
-
-export class Workspace {
-    id?: Nullable<string>;
-    name?: Nullable<string>;
-    image?: Nullable<string>;
-    userId?: Nullable<string>;
-    inviteCode?: Nullable<string>;
-    members?: Nullable<Nullable<Member>[]>;
 }
 
 export class Project {
@@ -140,21 +143,25 @@ export class Task {
     assigneeId?: Nullable<string>;
     description?: Nullable<string>;
     position?: Nullable<number>;
-    assignee?: Nullable<User>;
-    project?: Nullable<Project>;
 }
 
-export class Analytics {
-    taskCount?: Nullable<number>;
-    taskDifference?: Nullable<number>;
-    assignedTaskCount?: Nullable<number>;
-    assignedTaskDifference?: Nullable<number>;
-    completedTaskCount?: Nullable<number>;
-    completedTaskDifference?: Nullable<number>;
-    incompleteTaskCount?: Nullable<number>;
-    incompleteTaskDifference?: Nullable<number>;
-    overdueTaskCount?: Nullable<number>;
-    overdueTaskDifference?: Nullable<number>;
+export class User {
+    id?: Nullable<string>;
+    name?: Nullable<string>;
+    email?: Nullable<string>;
+}
+
+export class Workspace {
+    id?: Nullable<string>;
+    name?: Nullable<string>;
+    image?: Nullable<string>;
+    userId?: Nullable<string>;
+    inviteCode?: Nullable<string>;
+    members?: Nullable<Nullable<Member>[]>;
+}
+
+export class WorkspaceInfo {
+    name?: Nullable<string>;
 }
 
 export type Upload = any;

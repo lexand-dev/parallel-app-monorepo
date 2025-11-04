@@ -1,34 +1,33 @@
+// src/modules/members/member.resolver.ts
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { MembersService } from './members.service';
-import { CreateMemberInput } from './dto/create-member.input';
-import { UpdateMemberInput } from './dto/update-member.input';
+import { Member } from './entities/member.entity';
+import { type MemberRole, SuccessResponse } from '../../graphql';
 
-@Resolver('Member')
+//@UseGuards(GqlAuthGuard)
+@Resolver(() => Member)
 export class MembersResolver {
-  constructor(private readonly membersService: MembersService) {}
+  constructor(private readonly memberService: MembersService) {}
 
-  @Mutation('createMember')
-  create(@Args('createMemberInput') createMemberInput: CreateMemberInput) {
-    return this.membersService.create(createMemberInput);
+  @Query(() => [Member])
+  getMembers(@Args('workspaceId') workspaceId: string) {
+    return this.memberService.getMembers(workspaceId);
   }
 
-  @Query('members')
-  findAll() {
-    return this.membersService.findAll();
+  @Mutation(() => SuccessResponse)
+  removeMember(
+    @Args('memberId') memberId: string,
+    @Args('workspaceId') workspaceId: string,
+  ) {
+    return this.memberService.removeMember(memberId, workspaceId);
   }
 
-  @Query('member')
-  findOne(@Args('id') id: number) {
-    return this.membersService.findOne(id);
-  }
-
-  @Mutation('updateMember')
-  update(@Args('updateMemberInput') updateMemberInput: UpdateMemberInput) {
-    return this.membersService.update(updateMemberInput.id, updateMemberInput);
-  }
-
-  @Mutation('removeMember')
-  remove(@Args('id') id: number) {
-    return this.membersService.remove(id);
+  @Mutation(() => SuccessResponse)
+  updateRole(
+    @Args('memberId') memberId: string,
+    @Args('role') role: MemberRole,
+    @Args('workspaceId') workspaceId: string,
+  ) {
+    return this.memberService.updateRole(memberId, role, workspaceId);
   }
 }

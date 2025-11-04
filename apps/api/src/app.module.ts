@@ -11,10 +11,11 @@ import { validateEnv } from './config/env';
 import { DatabaseModule } from '@/db/db.module';
 import { AuthModule } from '@/graphql/auth/auth.module';
 import { UsersModule } from '@/graphql/users/users.module';
+import { TasksModule } from './graphql/tasks/tasks.module';
 import { MembersModule } from './graphql/members/members.module';
 import { ProjectsModule } from './graphql/projects/projects.module';
-import { TasksModule } from './graphql/tasks/tasks.module';
 import { WorkspacesModule } from './graphql/workspaces/workspaces.module';
+import { AnalyticsModule } from './graphql/analytics/analytics.module';
 
 @Module({
   imports: [
@@ -24,13 +25,26 @@ import { WorkspacesModule } from './graphql/workspaces/workspaces.module';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      include: [
+        UsersModule,
+        AuthModule,
+        MembersModule,
+        ProjectsModule,
+        TasksModule,
+        WorkspacesModule,
+        AnalyticsModule,
+      ],
+      /*       cors: {
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        credentials: true,
+      }, */
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       // Schema first:
       typePaths: ['./**/*.graphql'],
       definitions: {
         path: join(process.cwd(), 'src/graphql.ts'),
-        enumsAsTypes: true,
         outputAs: 'class',
       },
     }),
@@ -43,6 +57,7 @@ import { WorkspacesModule } from './graphql/workspaces/workspaces.module';
     ProjectsModule,
     TasksModule,
     WorkspacesModule,
+    AnalyticsModule,
   ],
   providers: [
     {

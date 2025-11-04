@@ -1,24 +1,17 @@
-type Project {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input CreateProjectInput {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input UpdateProjectInput {
-  id: Int!
-}
-
 type Query {
-  projects: [Project]!
-  project(id: Int!): Project
+  getProjects(workspaceId: ID!): [Project]
+  getProject(projectId: ID!): Project
 }
 
 type Mutation {
-  createProject(createProjectInput: CreateProjectInput!): Project!
-  updateProject(updateProjectInput: UpdateProjectInput!): Project!
-  removeProject(id: Int!): Project
+  createProject(name: String!, workspaceId: ID!, image: ImageInput): Project
+  updateProject(id: ID!, name: String!, image: ImageInput): Project
+  deleteProject(id: ID!): Project
+}
+
+type Project {
+  id: ID
+  name: String
+  image: String
+  workspaceId: String
 }

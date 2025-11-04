@@ -1,24 +1,59 @@
-type Task {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input CreateTaskInput {
-  # Example field (placeholder)
-  exampleField: Int
-}
-
-input UpdateTaskInput {
-  id: Int!
-}
-
 type Query {
-  tasks: [Task]!
-  task(id: Int!): Task
+  getTasks(
+    workspaceId: ID!
+    projectId: ID
+    assigneeId: ID
+    status: TaskStatus
+    search: String
+    dueDate: String
+  ): [Task]
+  getTask(id: ID!): Task
 }
 
 type Mutation {
-  createTask(createTaskInput: CreateTaskInput!): Task!
-  updateTask(updateTaskInput: UpdateTaskInput!): Task!
-  removeTask(id: Int!): Task
+  createTask(
+    name: String!
+    status: TaskStatus!
+    workspaceId: ID!
+    projectId: ID!
+    dueDate: String!
+    assigneeId: ID!
+  ): Task
+  updateTask(
+    id: ID!
+    name: String
+    status: TaskStatus
+    dueDate: String
+    projectId: ID
+    assigneeId: ID
+    description: String
+  ): Task
+  deleteTask(id: ID!): Task
+  bulkUpdateTasks(tasks: [BulkTask!]!): [Task]
+}
+
+type Task {
+  id: ID
+  name: String
+  status: TaskStatus
+  workspaceId: String
+  projectId: String
+  dueDate: String
+  assigneeId: String
+  description: String
+  position: Int
+}
+
+input BulkTask {
+  id: ID!
+  status: TaskStatus
+  position: Int
+}
+
+enum TaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
 }

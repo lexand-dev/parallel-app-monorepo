@@ -1,0 +1,17 @@
+type Query {
+  getAnalyticsProject(projectId: ID!): Analytics
+  getAnalyticsWorkspace(workspaceId: ID!): Analytics
+}
+
+type Analytics {
+  taskCount: Int
+  taskDifference: Int
+  assignedTaskCount: Int
+  assignedTaskDifference: Int
+  completedTaskCount: Int
+  completedTaskDifference: Int
+  incompleteTaskCount: Int
+  incompleteTaskDifference: Int
+  overdueTaskCount: Int
+  overdueTaskDifference: Int
+}
