@@ -15,6 +15,7 @@ export class AuthResolver {
 
   @Mutation()
   async signin(@Args('input') args: SignInDto) {
-    return this.authService.login(args);
+    const token = await this.authService.login(args);
+    return { success: true, message: 'User signed in successfully', token };
   }
 }

@@ -36,6 +36,7 @@ import { WorkspacesModule } from './modules/workspaces/workspaces.module';
     }),
     // Global Module
     DatabaseModule,
+    // App Modules
     UsersModule,
     AuthModule,
     MembersModule,
