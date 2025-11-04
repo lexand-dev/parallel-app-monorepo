@@ -1,4 +1,3 @@
-import { FileUpload } from 'graphql-upload/processRequest.mjs';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 
@@ -107,7 +106,7 @@ export class ProjectsResolver {
     let uploadedImageUrl: string | undefined;
 
     if (image?.file) {
-      const file: FileUpload = await image.file;
+      const file = await image.file;
 
       // Read the file stream and convert it to a Node.js File instance
       const stream = file.createReadStream();
@@ -183,7 +182,7 @@ export class ProjectsResolver {
     let uploadedImageUrl: string | undefined;
 
     if (image?.file) {
-      const file: FileUpload = await image.file;
+      const file = await image.file;
 
       // Read the file stream and convert it to a Node.js File instance
       const stream = file.createReadStream();

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
-import type { FileUpload } from 'graphql-upload/processRequest.mjs';
+import type { FileUpload } from '../../projects/dto/create-project.input';
 
 export const createWorkspaceSchema = z.object({
   name: z.string().trim().min(1, 'Name workspace is required'),

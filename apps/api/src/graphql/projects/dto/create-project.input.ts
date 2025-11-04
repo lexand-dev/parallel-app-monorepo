@@ -1,6 +1,24 @@
 import { z } from 'zod';
+import type { ReadStreamOptions } from 'fs-capacitor';
+import type { Readable } from 'node:stream';
 import { createZodDto } from 'nestjs-zod';
-import { FileUpload } from 'graphql-upload/processRequest.mjs';
+
+export interface FileUpload {
+  filename: string;
+  mimetype: string;
+  encoding: string;
+  // We omit the capacitor property because it's a private implementation detail that shouldn't be used outside.
+  createReadStream: FileUploadCreateReadStream;
+}
+
+export type FileUploadCreateReadStream = (
+  options?: FileUploadCreateReadStreamOptions,
+) => Readable;
+
+export interface FileUploadCreateReadStreamOptions {
+  encoding?: ReadStreamOptions['encoding'];
+  highWaterMark?: ReadStreamOptions['highWaterMark'];
+}
 
 export const ProjectSchemaInput = z.object({
   name: z.string(),

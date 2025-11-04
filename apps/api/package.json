@@ -41,6 +41,7 @@
     "date-fns": "^4.1.0",
     "drizzle-kit": "^0.31.1",
     "drizzle-orm": "^0.44.1",
+    "fs-capacitor": "^8.0.0",
     "graphql": "^16.11.0",
     "graphql-upload": "^17.0.0",
     "nestjs-cls": "^6.0.1",

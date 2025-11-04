@@ -7,7 +7,7 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import type { FileUpload } from 'graphql-upload/processRequest.mjs';
+import type { FileUpload } from '../projects/dto/create-project.input';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
 import { utapi } from '../../lib/uploathing';

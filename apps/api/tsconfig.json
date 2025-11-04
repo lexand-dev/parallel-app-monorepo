@@ -22,9 +22,6 @@
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false,
-    "allowJs": true,
-    "maxNodeModuleJsDepth": 10
+    "strictBindCallApply": false
   }
 }
