@@ -1,7 +1,7 @@
 import { z } from 'zod';
+import { createZodDto } from 'nestjs-zod';
 import type { ReadStreamOptions } from 'fs-capacitor';
 import type { Readable } from 'node:stream';
-import { createZodDto } from 'nestjs-zod';
 
 export interface FileUpload {
   filename: string;
