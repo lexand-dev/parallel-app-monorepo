@@ -2,7 +2,7 @@ import { FileUpload } from 'graphql-upload/processRequest.mjs';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 
-import { utapi } from '@/lib/uploathing';
+import { utapi } from '../../lib/uploathing';
 import { AuthGuard } from '../../guards/auth.guard';
 import { ProjectsService } from './projects.service';
 import { MembersService } from '../members/members.service';
