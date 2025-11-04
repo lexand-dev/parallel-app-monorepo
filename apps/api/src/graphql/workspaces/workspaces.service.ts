@@ -78,28 +78,27 @@ export class WorkspacesService {
       .from(workspaceMembers)
       .where(eq(workspaceMembers.userId, userId));
 
-    if (workspacesList.length === 0) {
-      return [];
+    if (!workspacesList.length) {
+      throw new Error('No workspaces found for the user');
     }
 
     const workspaceIds = workspacesList.map((member) => member.workspaceId);
 
-    if (workspaceIds.length === 0) {
-      return [];
-    }
-
-    const firstWorkspace = await this.db
+    const getWorkspacesbyMember = await this.db
       .select()
       .from(workspaces)
       .where(inArray(workspaces.id, workspaceIds))
-      .limit(1)
       .execute();
 
-    if (!firstWorkspace) {
-      return [];
+    if (!getWorkspacesbyMember.length) {
+      throw new Error('No workspaces found for the user');
     }
 
-    return firstWorkspace;
+    if (getWorkspacesbyMember.length !== workspaceIds.length) {
+      throw new Error('Some workspaces not found for the user');
+    }
+    // TODO: Verify if workspaces exist for this member
+    return getWorkspacesbyMember;
   }
 
   async getWorkspaceById(id: string) {
