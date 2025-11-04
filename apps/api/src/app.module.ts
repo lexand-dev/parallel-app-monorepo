@@ -9,12 +9,12 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 
 import { validateEnv } from './config/env';
 import { DatabaseModule } from '@/db/db.module';
-import { AuthModule } from '@/modules/auth/auth.module';
-import { UsersModule } from '@/modules/users/users.module';
-import { MembersModule } from './modules/members/members.module';
-import { ProjectsModule } from './modules/projects/projects.module';
-import { TasksModule } from './modules/tasks/tasks.module';
-import { WorkspacesModule } from './modules/workspaces/workspaces.module';
+import { AuthModule } from '@/graphql/auth/auth.module';
+import { UsersModule } from '@/graphql/users/users.module';
+import { MembersModule } from './graphql/members/members.module';
+import { ProjectsModule } from './graphql/projects/projects.module';
+import { TasksModule } from './graphql/tasks/tasks.module';
+import { WorkspacesModule } from './graphql/workspaces/workspaces.module';
 
 @Module({
   imports: [
