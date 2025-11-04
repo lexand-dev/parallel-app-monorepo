@@ -1,18 +1,83 @@
 import { Injectable } from '@nestjs/common';
-import { CreateMemberInput } from './dto/create-member.input';
-import { UpdateMemberInput } from './dto/update-member.input';
+import { MemberInput } from './dto/create-member.input';
+import { type DB, InjectDb } from '@/db/db.provider';
+import { users, workspaceMembers } from '@/db/schema';
+import { and, eq } from 'drizzle-orm';
 
 @Injectable()
 export class MembersService {
-  getMembers(createMemberInput: CreateMemberInput) {
-    return 'This action adds a new member';
+  constructor(@InjectDb() private readonly db: DB) {}
+
+  async getMembers(workspaceId: MemberInput['workspaceId']) {
+    const members = await this.db
+      .select({
+        workspaceId: workspaceMembers.workspaceId,
+        userId: workspaceMembers.userId,
+        role: workspaceMembers.role,
+        createdAt: workspaceMembers.createdAt,
+        updatedAt: workspaceMembers.updatedAt,
+        name: users.name,
+        email: users.email,
+      })
+      .from(workspaceMembers)
+      .leftJoin(users, eq(workspaceMembers.userId, users.id))
+      .where(eq(workspaceMembers.workspaceId, workspaceId));
+
+    return members;
   }
 
-  updateRole(memberId: string, workspaceId: string, role: string) {
-    return `This action updates a #${memberId} member`;
+  async getMember({
+    workspaceId,
+    userId,
+  }: {
+    workspaceId: MemberInput['workspaceId'];
+    userId: MemberInput['memberId'];
+  }) {
+    const [member] = await this.db
+      .select()
+      .from(workspaceMembers)
+      .where(
+        and(
+          eq(workspaceMembers.workspaceId, workspaceId),
+          eq(workspaceMembers.userId, userId),
+        ),
+      )
+      .limit(1)
+      .execute();
+
+    return member;
   }
 
-  removeMember(memberId: string, workspaceId: string) {
-    return `This action removes a #${memberId} member`;
+  async getMemberById(memberId: MemberInput['memberId']) {
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.id, memberId))
+      .limit(1)
+      .execute();
+
+    return user;
+  }
+
+  async removeMember(memberId: MemberInput['memberId']) {
+    const [member] = await this.db
+      .delete(workspaceMembers)
+      .where(eq(workspaceMembers.userId, memberId))
+      .returning();
+
+    return member;
+  }
+
+  async updateRole(
+    memberId: MemberInput['memberId'],
+    role: MemberInput['role'],
+  ) {
+    const [member] = await this.db
+      .update(workspaceMembers)
+      .set({ role })
+      .where(eq(workspaceMembers.userId, memberId))
+      .returning();
+
+    return member;
   }
 }
