@@ -1,26 +1,66 @@
+import { projects } from '@/db/schema';
+import { desc, eq } from 'drizzle-orm';
 import { Injectable } from '@nestjs/common';
-import { CreateProjectInput } from './dto/create-project.input';
+import { type DB, InjectDb } from '@/db/db.provider';
+import { ProjectInput } from './dto/create-project.input';
 import { UpdateProjectInput } from './dto/update-project.input';
 
 @Injectable()
 export class ProjectsService {
-  create(createProjectInput: CreateProjectInput) {
-    return 'This action adds a new project';
+  constructor(@InjectDb() private readonly db: DB) {}
+
+  async getProjects(workspaceId: ProjectInput['workspaceId']) {
+    const projectsList = await this.db
+      .select()
+      .from(projects)
+      .where(eq(projects.workspaceId, workspaceId))
+      .orderBy(desc(projects.createdAt));
+
+    return projectsList;
   }
 
-  findAll() {
-    return `This action returns all projects`;
+  async getProject(projectId: string) {
+    const [project] = await this.db
+      .select()
+      .from(projects)
+      .where(eq(projects.id, projectId))
+      .limit(1);
+
+    return project;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async createProject({ name, workspaceId, image }: ProjectInput) {
+    const [newProject] = await this.db
+      .insert(projects)
+      .values({
+        name,
+        workspaceId,
+        image: typeof image === 'string' ? image : null,
+      })
+      .returning();
+
+    return newProject;
   }
 
-  update(id: number, updateProjectInput: UpdateProjectInput) {
-    return `This action updates a #${id} project`;
+  async updateProject({ id, image, name }: UpdateProjectInput) {
+    const [updatedProject] = await this.db
+      .update(projects)
+      .set({
+        name,
+        image: typeof image === 'string' ? image : null,
+      })
+      .where(eq(projects.id, id))
+      .returning();
+
+    return updatedProject;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  async deleteProject(projectId: string) {
+    const [deletedProject] = await this.db
+      .delete(projects)
+      .where(eq(projects.id, projectId))
+      .returning();
+
+    return deletedProject;
   }
 }

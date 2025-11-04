@@ -74,6 +74,9 @@ importers:
       graphql:
         specifier: ^16.11.0
         version: 16.11.0
+      graphql-upload:
+        specifier: ^17.0.0
+        version: 17.0.0(@types/express@5.0.4)(@types/koa@3.0.1)(graphql@16.11.0)
       nestjs-cls:
         specifier: ^6.0.1
         version: 6.0.1(@nestjs/common@11.1.7(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/core@11.1.7(@nestjs/common@11.1.7(reflect-metadata@0.2.2)(rxjs@7.8.2))(@nestjs/platform-express@11.1.7)(reflect-metadata@0.2.2)(rxjs@7.8.2))(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -89,6 +92,9 @@ importers:
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
+      uploadthing:
+        specifier: ^7.7.2
+        version: 7.7.4(express@5.1.0)(tailwindcss@4.1.16)
       zod:
         specifier: ^3.25.49
         version: 3.25.76
@@ -117,6 +123,9 @@ importers:
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.4
+      '@types/graphql-upload':
+        specifier: ^17.0.0
+        version: 17.0.0
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
