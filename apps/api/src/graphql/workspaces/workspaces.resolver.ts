@@ -35,15 +35,18 @@ export class WorkspacesResolver {
       throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
     }
 
-    const workspaces =
+    const workspace =
       await this.workspacesService.getWorkspacesbyMember(userId);
 
-    return workspaces.map((workspace) => ({
-      id: workspace.id,
-      name: workspace.name,
-      image: workspace.image,
-      userId: workspace.userId,
-      inviteCode: workspace.inviteCode,
+    if (!workspace.length) {
+      return [];
+    }
+    return workspace.map((ws) => ({
+      id: ws.id,
+      name: ws.name,
+      image: ws.image,
+      userId: ws.userId,
+      inviteCode: ws.inviteCode,
     }));
   }
 
