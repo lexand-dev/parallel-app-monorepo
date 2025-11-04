@@ -2,8 +2,8 @@ import { sql } from 'drizzle-orm';
 import { Injectable } from '@nestjs/common';
 import { and, asc, desc, eq, inArray } from 'drizzle-orm';
 
-import { tasks } from '@/db/schema';
-import { type DB, InjectDb } from '@/db/db.provider';
+import { tasks } from '../../db/schema';
+import { type DB, InjectDb } from '../../db/db.provider';
 import { BulkTask, Task, TaskSearch, UpdateTask } from './entities/task.entity';
 
 @Injectable()

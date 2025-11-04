@@ -1,8 +1,8 @@
 import { MemberRole } from '../../graphql';
 import { eq, inArray } from 'drizzle-orm';
 import { Injectable } from '@nestjs/common';
-import { type DB, InjectDb } from '@/db/db.provider';
-import { workspaceMembers, workspaces } from '@/db/schema';
+import { type DB, InjectDb } from '../../db/db.provider';
+import { workspaceMembers, workspaces } from '../../db/schema';
 import { CreateWorkspaceInput } from './dto/create-workspace.input';
 import { UpdateWorkspaceInput } from './dto/update-workspace.input';
 

@@ -1,8 +1,8 @@
 import { and, eq } from 'drizzle-orm';
 import { Injectable } from '@nestjs/common';
 
-import { type DB, InjectDb } from '@/db/db.provider';
-import { users, workspaceMembers } from '@/db/schema';
+import { type DB, InjectDb } from '../../db/db.provider';
+import { users, workspaceMembers } from '../../db/schema';
 import { MemberInput } from './dto/create-member.input';
 
 @Injectable()

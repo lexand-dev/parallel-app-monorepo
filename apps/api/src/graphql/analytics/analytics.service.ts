@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { and, eq, gte, lte, lt, ne } from 'drizzle-orm';
 import { endOfMonth, startOfMonth, subMonths } from 'date-fns';
 
-import { tasks } from '@/db/schema';
-import { type DB, InjectDb } from '@/db/db.provider';
+import { tasks } from '../../db/schema';
+import { type DB, InjectDb } from '../../db/db.provider';
 import { TaskStatus } from '../tasks/entities/task.entity';
 
 @Injectable()

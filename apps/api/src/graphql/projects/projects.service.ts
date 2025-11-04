@@ -1,8 +1,8 @@
-import { projects } from '@/db/schema';
+import { projects } from '../../db/schema';
 import { desc, eq } from 'drizzle-orm';
 import { Injectable } from '@nestjs/common';
 
-import { type DB, InjectDb } from '@/db/db.provider';
+import { type DB, InjectDb } from '../../db/db.provider';
 import { ProjectInput } from './dto/create-project.input';
 import { UpdateProjectInput } from './dto/update-project.input';
 
