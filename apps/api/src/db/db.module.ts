@@ -4,7 +4,7 @@ import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 
 import * as schema from './schema';
-import { ConfigType } from '@/config/env';
+import { ConfigType } from '../config/env';
 import { DB_CONNECTION } from './db.provider';
 
 @Global()
