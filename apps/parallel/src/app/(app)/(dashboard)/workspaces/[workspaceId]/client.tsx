@@ -78,7 +78,7 @@ export const WorkspaceIdClient = () => {
     isLoadingMembers;
 
   const analytics = analyticsData?.getAnalyticsWorkspace;
-  const tasks = tasksData?.getTasks;
+  const tasks = tasksData?.getTasks || [];
   const projects = projectsData?.getProjects;
   const members = membersData?.getMembers;
 

@@ -37,9 +37,11 @@ export default async function Home() {
     {}
   );
 
-  if (!data?.getWorkspaces) {
+  console.log("DATA:", data);
+
+  if (!data?.getWorkspaces || data?.getWorkspaces.length === 0) {
     redirect("/workspaces/create");
   } else {
-    redirect(`/workspaces/${data.getWorkspaces[0]?.id}`);
+    redirect(`/workspaces/${data?.getWorkspaces[0]?.id}`);
   }
 }

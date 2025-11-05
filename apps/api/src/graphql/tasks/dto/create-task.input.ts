@@ -21,4 +21,5 @@ export const TaskSchema = z.object({
   description: z.string().optional(),
 });
 
+export type TaskInput = z.infer<typeof TaskSchema>;
 export class CreateTaskInput extends createZodDto(TaskSchema) {}

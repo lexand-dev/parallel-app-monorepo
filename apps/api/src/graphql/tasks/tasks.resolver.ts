@@ -11,7 +11,7 @@ import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
 import { AuthGuard } from '../../guards/auth.guard';
 import { BulkTask } from './entities/task.entity';
-import { CreateTaskInput } from './dto/create-task.input';
+import { CreateTaskInput, TaskInput } from './dto/create-task.input';
 import { UpdateTaskInput } from './dto/update-task.input';
 
 import { TasksService } from './tasks.service';
@@ -236,6 +236,47 @@ export class TasksResolver {
       ...task,
       dueDate: task.dueDate ? task.dueDate.toISOString() : null,
     };
+  }
+
+  @Query('getTasks')
+  async getTasks(
+    @Context() context: any,
+    @Args('workspaceId') workspaceId: string,
+    @Args('projectId') projectId?: string,
+    @Args('assigneeId') assigneeId?: string,
+    @Args('status') status?: TaskInput['status'],
+    @Args('search') search?: string,
+    @Args('dueDate') dueDate?: TaskInput['dueDate'],
+  ) {
+    const userId = context.user.sub;
+    if (!userId) {
+      throw new HttpException('Not authenticated', HttpStatus.UNAUTHORIZED);
+    }
+
+    const member = await this.membersService.getMember({
+      workspaceId: workspaceId ? workspaceId : '',
+      userId: userId,
+    });
+    if (!member) {
+      throw new HttpException(
+        'Not a member of this workspace',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+
+    const tasks = await this.tasksService.getTasks({
+      workspaceId,
+      projectId,
+      assigneeId,
+      status,
+      search,
+      dueDate,
+    });
+
+    return tasks.map((task) => ({
+      ...task,
+      dueDate: task.dueDate ? task.dueDate.toISOString() : null,
+    }));
   }
 
   @ResolveField('assignee')
