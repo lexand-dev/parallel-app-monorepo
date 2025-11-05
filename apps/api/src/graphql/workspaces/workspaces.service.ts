@@ -78,10 +78,6 @@ export class WorkspacesService {
       .from(workspaceMembers)
       .where(eq(workspaceMembers.userId, userId));
 
-    if (!workspacesList.length) {
-      throw new Error('No workspaces found for the user');
-    }
-
     const workspaceIds = workspacesList.map((member) => member.workspaceId);
 
     const getWorkspacesbyMember = await this.db
@@ -90,13 +86,6 @@ export class WorkspacesService {
       .where(inArray(workspaces.id, workspaceIds))
       .execute();
 
-    if (!getWorkspacesbyMember.length) {
-      throw new Error('No workspaces found for the user');
-    }
-
-    if (getWorkspacesbyMember.length !== workspaceIds.length) {
-      throw new Error('Some workspaces not found for the user');
-    }
     // TODO: Verify if workspaces exist for this member
     return getWorkspacesbyMember;
   }
