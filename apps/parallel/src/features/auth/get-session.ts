@@ -6,8 +6,9 @@ export const getSession = async () => {
   const cookieHeader = allCookies
     .map(({ name, value }) => `${name}=${value}`)
     .join("; ");
+
   const session = cookieStore.has(process.env.AUTH_COOKIE!);
-  console.log("getAuth session:", session);
+
   if (!session) return null;
   return {
     cookieHeader,

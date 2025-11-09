@@ -13,6 +13,10 @@ interface QueryResponse {
 export default async function Home() {
   const auth = await getSession();
 
+  if (!auth) {
+    redirect("/sign-in");
+  }
+
   const makeClient = () => {
     return createClient({
       url: `${process.env.NEXT_PUBLIC_APP_URL}/api/graphql`,
@@ -20,7 +24,7 @@ export default async function Home() {
       fetchOptions: {
         credentials: "include",
         headers: {
-          cookie: auth?.cookieHeader!
+          cookie: auth.cookieHeader
         }
       }
     });
@@ -28,16 +32,10 @@ export default async function Home() {
 
   const { getClient } = registerUrql(makeClient);
 
-  if (!auth?.session) {
-    redirect("/sign-in");
-  }
-
   const { data } = await getClient().query<QueryResponse>(
     GET_WORKSPACES_QUERY,
     {}
   );
-
-  console.log("DATA:", data);
 
   if (!data?.getWorkspaces || data?.getWorkspaces.length === 0) {
     redirect("/workspaces/create");
