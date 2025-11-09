@@ -24,8 +24,3 @@ type Workspace {
 type WorkspaceInfo {
   name: String
 }
-
-input ImageInput {
-  file: Upload
-  url: String
-}

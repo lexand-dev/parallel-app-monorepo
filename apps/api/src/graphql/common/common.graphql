@@ -2,3 +2,8 @@ type SuccessResponse {
   success: Boolean
   message: String
 }
+
+input ImageInput {
+  file: Upload
+  url: String
+}
