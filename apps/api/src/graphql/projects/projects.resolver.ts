@@ -144,6 +144,13 @@ export class ProjectsResolver {
       image: uploadedImageUrl,
     });
 
+    if (!project) {
+      throw new HttpException(
+        'Failed to create project',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     return {
       id: project.id,
       name: project.name,
@@ -220,6 +227,13 @@ export class ProjectsResolver {
       image: uploadedImageUrl,
     });
 
+    if (!updatedProject) {
+      throw new HttpException(
+        'Failed to update project',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     return {
       id: updatedProject.id,
       name: updatedProject.name,
@@ -252,6 +266,13 @@ export class ProjectsResolver {
     }
 
     const deletedProject = await this.projectsService.deleteProject(id);
+
+    if (!deletedProject) {
+      throw new HttpException(
+        'Failed to delete project',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return {
       id: deletedProject.id,

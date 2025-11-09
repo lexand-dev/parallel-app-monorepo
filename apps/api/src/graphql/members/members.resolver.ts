@@ -1,7 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 
-import { MemberRole } from '../../graphql';
 import { AuthGuard } from '../../guards/auth.guard';
 import { MembersService } from './members.service';
 import {
@@ -9,6 +8,7 @@ import {
   ForbiddenException,
   BadRequestException,
 } from '@nestjs/common';
+import { MemberRole } from './entities/member.entity';
 
 @UseGuards(AuthGuard)
 @Resolver('Member')

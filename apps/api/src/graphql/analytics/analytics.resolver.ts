@@ -27,6 +27,10 @@ export class AnalyticsResolver {
 
     const project = await this.projectsService.getProjectById(projectId);
 
+    if (!project) {
+      throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
+    }
+
     const member = await this.membersService.getMember({
       workspaceId: project.workspaceId,
       userId: userId,

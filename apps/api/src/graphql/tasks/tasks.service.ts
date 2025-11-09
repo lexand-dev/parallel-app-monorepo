@@ -25,7 +25,7 @@ export class TasksService {
       .orderBy(asc(tasks.position));
 
     const newPosition =
-      highestPositionTask.length > 0
+      highestPositionTask.length > 0 && highestPositionTask[0]
         ? highestPositionTask[0].position + 1000
         : 1000;
 

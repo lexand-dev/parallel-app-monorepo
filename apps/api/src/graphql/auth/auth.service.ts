@@ -22,6 +22,13 @@ export class AuthService {
     }
     const user = await this.userService.create(name, email, hashedPW);
 
+    if (!user) {
+      throw new HttpException(
+        'Error creating user',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     const payload = { sub: user.id };
     const token = await this.jwtService.signAsync(payload);
 

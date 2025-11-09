@@ -46,7 +46,7 @@ import { AnalyticsModule } from './graphql/analytics/analytics.module';
           typePaths: ['./**/*.graphql'],
           definitions: {
             path: join(process.cwd(), 'src/graphql.ts'),
-            outputAs: 'class',
+            /* outputAs: 'class', */
           },
           resolvers: { Upload: GraphQLUpload },
         };

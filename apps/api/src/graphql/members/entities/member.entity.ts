@@ -1,1 +1,4 @@
-export class Member {}
+export enum MemberRole {
+  ADMIN = 'ADMIN',
+  MEMBER = 'MEMBER',
+}

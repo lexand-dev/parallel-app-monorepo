@@ -11,7 +11,6 @@ import type { FileUpload } from '../projects/dto/create-project.input';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
 import { utapi } from '../../lib/uploathing';
-import { MemberRole } from '../../graphql';
 import { AuthGuard } from '../../guards/auth.guard';
 import { generateInviteCode } from '../..//lib/utils';
 import { WorkspacesService } from './workspaces.service';
@@ -19,6 +18,7 @@ import { MembersService } from '../members/members.service';
 import { CreateWorkspaceInputDto } from './dto/create-workspace.input';
 import { UpdateWorkspaceInputDto } from './dto/update-workspace.input';
 import { File } from 'node:buffer';
+import { MemberRole } from '../members/entities/member.entity';
 
 @UseGuards(AuthGuard)
 @Resolver('Workspace')
@@ -144,6 +144,13 @@ export class WorkspacesResolver {
       inviteCode: generateInviteCode(6),
     });
 
+    if (!workspace) {
+      throw new HttpException(
+        'Failed to create workspace',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     await this.workspacesService.addMember({
       workspaceId: workspace.id,
       userId: userId,
@@ -248,6 +255,13 @@ export class WorkspacesResolver {
       image: uploadedImageUrl,
     });
 
+    if (!updatedWorkspace) {
+      throw new HttpException(
+        'Failed to update workspace',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     return {
       id: updatedWorkspace.id,
       name: updatedWorkspace.name,
@@ -317,6 +331,13 @@ export class WorkspacesResolver {
       id,
       inviteCode: generateInviteCode(6),
     });
+
+    if (!updatedWorkspace) {
+      throw new HttpException(
+        'Failed to reset invite code',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return {
       id: updatedWorkspace.id,

@@ -61,7 +61,13 @@ export class TasksResolver {
       dueDate,
       assigneeId,
     });
-    console.log('Created task:', task);
+
+    if (!task) {
+      throw new HttpException(
+        'Failed to create task',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
 
     return {
       id: task.id,
@@ -97,6 +103,10 @@ export class TasksResolver {
     }
     const taskWorkspace = await this.tasksService.getTaskById(id);
 
+    if (!taskWorkspace) {
+      throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+    }
+
     const member = await this.membersService.getMember({
       workspaceId: taskWorkspace.workspaceId,
       userId: userId,
@@ -118,6 +128,13 @@ export class TasksResolver {
       description,
     });
 
+    if (!task) {
+      throw new HttpException(
+        'Failed to update task',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
     return {
       id: task.id,
       name: task.name,
@@ -137,6 +154,10 @@ export class TasksResolver {
     }
 
     const task = await this.tasksService.getTaskById(id);
+
+    if (!task) {
+      throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+    }
 
     const member = await this.membersService.getMember({
       workspaceId: task.workspaceId,
@@ -173,7 +194,18 @@ export class TasksResolver {
 
     // TODO: check if all tasks belong to the same workspace
 
-    const task = await this.tasksService.getTaskById(tasks[0].id);
+    if (!tasks[0] || tasks.length === 0) {
+      throw new HttpException(
+        'No tasks provided for bulk update',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const task = await this.tasksService.getTaskById(tasks[0]?.id);
+    if (!task) {
+      throw new HttpException('Task not found', HttpStatus.NOT_FOUND);
+    }
+
     const member = await this.membersService.getMember({
       workspaceId: task.workspaceId,
       userId: userId,
@@ -306,6 +338,10 @@ export class TasksResolver {
 
     const assignee = await this.membersService.getMemberById(task.assigneeId);
 
+    if (!assignee) {
+      throw new HttpException('Assignee not found', HttpStatus.NOT_FOUND);
+    }
+
     return {
       id: assignee.id,
       name: assignee.name,
@@ -339,6 +375,10 @@ export class TasksResolver {
     }
 
     const project = await this.projectsService.getProjectById(task.projectId);
+
+    if (!project) {
+      throw new HttpException('Project not found', HttpStatus.NOT_FOUND);
+    }
 
     return {
       id: project.id,

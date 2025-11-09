@@ -21,53 +21,43 @@ export enum TaskStatus {
     DONE = "DONE"
 }
 
-export class SignUpInput {
+export interface SignUpInput {
     name: string;
     password: string;
     email: string;
 }
 
-export class SignInInput {
+export interface SignInInput {
     email: string;
     password: string;
 }
 
-export class BulkTask {
+export interface BulkTask {
     id: string;
     status?: Nullable<TaskStatus>;
     position?: Nullable<number>;
 }
 
-export class ImageInput {
+export interface ImageInput {
     file?: Nullable<Upload>;
     url?: Nullable<string>;
 }
 
-export abstract class IQuery {
-    abstract getAnalyticsProject(projectId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
-
-    abstract getAnalyticsWorkspace(workspaceId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
-
-    abstract getMembers(workspaceId: string): Nullable<Nullable<Member>[]> | Promise<Nullable<Nullable<Member>[]>>;
-
-    abstract getProjects(workspaceId: string): Nullable<Nullable<Project>[]> | Promise<Nullable<Nullable<Project>[]>>;
-
-    abstract getProject(projectId: string): Nullable<Project> | Promise<Nullable<Project>>;
-
-    abstract getTasks(workspaceId: string, projectId?: Nullable<string>, assigneeId?: Nullable<string>, status?: Nullable<TaskStatus>, search?: Nullable<string>, dueDate?: Nullable<string>): Nullable<Nullable<Task>[]> | Promise<Nullable<Nullable<Task>[]>>;
-
-    abstract getTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
-
-    abstract current(): Nullable<User> | Promise<Nullable<User>>;
-
-    abstract getWorkspaces(): Nullable<Nullable<Workspace>[]> | Promise<Nullable<Nullable<Workspace>[]>>;
-
-    abstract getWorkspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract getWorkspaceInfo(id: string): Nullable<WorkspaceInfo> | Promise<Nullable<WorkspaceInfo>>;
+export interface IQuery {
+    getAnalyticsProject(projectId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
+    getAnalyticsWorkspace(workspaceId: string): Nullable<Analytics> | Promise<Nullable<Analytics>>;
+    getMembers(workspaceId: string): Nullable<Nullable<Member>[]> | Promise<Nullable<Nullable<Member>[]>>;
+    getProjects(workspaceId: string): Nullable<Nullable<Project>[]> | Promise<Nullable<Nullable<Project>[]>>;
+    getProject(projectId: string): Nullable<Project> | Promise<Nullable<Project>>;
+    getTasks(workspaceId: string, projectId?: Nullable<string>, assigneeId?: Nullable<string>, status?: Nullable<TaskStatus>, search?: Nullable<string>, dueDate?: Nullable<string>): Nullable<Nullable<Task>[]> | Promise<Nullable<Nullable<Task>[]>>;
+    getTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    current(): Nullable<User> | Promise<Nullable<User>>;
+    getWorkspaces(): Nullable<Nullable<Workspace>[]> | Promise<Nullable<Nullable<Workspace>[]>>;
+    getWorkspace(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+    getWorkspaceInfo(id: string): Nullable<WorkspaceInfo> | Promise<Nullable<WorkspaceInfo>>;
 }
 
-export class Analytics {
+export interface Analytics {
     taskCount?: Nullable<number>;
     taskDifference?: Nullable<number>;
     assignedTaskCount?: Nullable<number>;
@@ -80,62 +70,46 @@ export class Analytics {
     overdueTaskDifference?: Nullable<number>;
 }
 
-export abstract class IMutation {
-    abstract signup(input: SignUpInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract signin(input: SignInInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract logout(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract removeMember(memberId: string, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract updateRole(memberId: string, role: MemberRole, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract createProject(name: string, workspaceId: string, image?: Nullable<ImageInput>): Nullable<Project> | Promise<Nullable<Project>>;
-
-    abstract updateProject(id: string, name: string, image?: Nullable<ImageInput>): Nullable<Project> | Promise<Nullable<Project>>;
-
-    abstract deleteProject(id: string): Nullable<Project> | Promise<Nullable<Project>>;
-
-    abstract createTask(name: string, status: TaskStatus, workspaceId: string, projectId: string, dueDate: string, assigneeId: string): Nullable<Task> | Promise<Nullable<Task>>;
-
-    abstract updateTask(id: string, name?: Nullable<string>, status?: Nullable<TaskStatus>, dueDate?: Nullable<string>, projectId?: Nullable<string>, assigneeId?: Nullable<string>, description?: Nullable<string>): Nullable<Task> | Promise<Nullable<Task>>;
-
-    abstract deleteTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
-
-    abstract bulkUpdateTasks(tasks: BulkTask[]): Nullable<Nullable<Task>[]> | Promise<Nullable<Nullable<Task>[]>>;
-
-    abstract createWorkspace(name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract updateWorkspace(id: string, name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract deleteWorkspace(id: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
-
-    abstract joinWorkspace(inviteCode: string, workspaceId: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
-
-    abstract resetInviteCode(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+export interface IMutation {
+    signup(input: SignUpInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    signin(input: SignInInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    logout(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    removeMember(memberId: string, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    updateRole(memberId: string, role: MemberRole, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    createProject(name: string, workspaceId: string, image?: Nullable<ImageInput>): Nullable<Project> | Promise<Nullable<Project>>;
+    updateProject(id: string, name: string, image?: Nullable<ImageInput>): Nullable<Project> | Promise<Nullable<Project>>;
+    deleteProject(id: string): Nullable<Project> | Promise<Nullable<Project>>;
+    createTask(name: string, status: TaskStatus, workspaceId: string, projectId: string, dueDate: string, assigneeId: string): Nullable<Task> | Promise<Nullable<Task>>;
+    updateTask(id: string, name?: Nullable<string>, status?: Nullable<TaskStatus>, dueDate?: Nullable<string>, projectId?: Nullable<string>, assigneeId?: Nullable<string>, description?: Nullable<string>): Nullable<Task> | Promise<Nullable<Task>>;
+    deleteTask(id: string): Nullable<Task> | Promise<Nullable<Task>>;
+    bulkUpdateTasks(tasks: BulkTask[]): Nullable<Nullable<Task>[]> | Promise<Nullable<Nullable<Task>[]>>;
+    createWorkspace(name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+    updateWorkspace(id: string, name: string, image?: Nullable<ImageInput>): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+    deleteWorkspace(id: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    joinWorkspace(inviteCode: string, workspaceId: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
+    resetInviteCode(id: string): Nullable<Workspace> | Promise<Nullable<Workspace>>;
 }
 
-export class SuccessResponse {
+export interface SuccessResponse {
     success?: Nullable<boolean>;
     message?: Nullable<string>;
 }
 
-export class Member {
+export interface Member {
     id?: Nullable<string>;
     name?: Nullable<string>;
     role?: Nullable<MemberRole>;
     email?: Nullable<string>;
 }
 
-export class Project {
+export interface Project {
     id?: Nullable<string>;
     name?: Nullable<string>;
     image?: Nullable<string>;
     workspaceId?: Nullable<string>;
 }
 
-export class Task {
+export interface Task {
     id?: Nullable<string>;
     name?: Nullable<string>;
     status?: Nullable<TaskStatus>;
@@ -149,13 +123,13 @@ export class Task {
     project?: Nullable<Project>;
 }
 
-export class User {
+export interface User {
     id?: Nullable<string>;
     name?: Nullable<string>;
     email?: Nullable<string>;
 }
 
-export class Workspace {
+export interface Workspace {
     id?: Nullable<string>;
     name?: Nullable<string>;
     image?: Nullable<string>;
@@ -164,7 +138,7 @@ export class Workspace {
     members?: Nullable<Nullable<Member>[]>;
 }
 
-export class WorkspaceInfo {
+export interface WorkspaceInfo {
     name?: Nullable<string>;
 }
 
