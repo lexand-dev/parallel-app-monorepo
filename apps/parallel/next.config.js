@@ -11,7 +11,9 @@ const nextConfig = {
     return [
       {
         source: "/api/graphql",
-        destination: `https://api-gql-production.up.railway.app/graphql`
+        // Proxy GraphQL requests to the production API endpoint
+        /* destination: `https://api-gql-production.up.railway.app/graphql` */
+        destination: `http://localhost:4000/graphql`
       }
     ];
   }
