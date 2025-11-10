@@ -4,16 +4,20 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 
 import { UsersService } from '../users/users.service';
 import { SignInDtoType, SignUpDtoType } from './dto/auth.dto';
+import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '../../config/env';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService<ConfigType>,
   ) {}
 
   async register({ name, email, password }: SignUpDtoType) {
-    const hashedPW = await bcrypt.hash(password, 10);
+    const saltRounds = this.configService.get('BCRYPT_SALT_ROUNDS');
+    const hashedPW = await bcrypt.hash(password, saltRounds);
 
     const existingUser = await this.userService.findByEmail(email);
 

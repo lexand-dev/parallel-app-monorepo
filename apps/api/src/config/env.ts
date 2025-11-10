@@ -16,6 +16,7 @@ export const envSchema = z.object({
   JWT_SECRET: z.string().min(1, 'JWT_SECRET is required'),
   COOKIE_SECRET: z.string().min(1, 'COOKIE_SECRET is required'),
   BCRYPT_SALT_ROUNDS: z.coerce.number().default(10),
+  UPLOADING_API_TOKEN: z.string().min(1, 'UPLOADING_API_TOKEN is required'),
 });
 
 type Env = z.infer<typeof envSchema>;

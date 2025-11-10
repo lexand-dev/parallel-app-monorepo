@@ -1,22 +1,27 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
-import { AuthResolver } from './auth.resolver';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
-export const jwtConstants = {
-  secret:
-    'DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.',
-};
+import { AuthService } from './auth.service';
+import { ConfigType } from '../../config/env';
+import { AuthResolver } from './auth.resolver';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   exports: [AuthService],
   imports: [
     UsersModule,
-    JwtModule.register({
+    JwtModule.registerAsync({
       global: true,
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '7d' },
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService<ConfigType>) => {
+        const secret = configService.get('JWT_SECRET');
+        const expiresIn = configService.get('JWT_EXPIRES_IN');
+        return {
+          secret,
+          signOptions: { expiresIn },
+        };
+      },
     }),
   ],
   providers: [AuthService, AuthResolver],

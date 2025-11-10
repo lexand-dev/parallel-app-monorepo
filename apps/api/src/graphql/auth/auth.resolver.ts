@@ -6,18 +6,24 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '../../guards/auth.guard';
 import { SignInDto, SignUpDto } from './dto/auth.dto';
+import { ConfigService } from '@nestjs/config';
+import { ConfigType } from 'src/config/env';
 
 @Resolver()
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService<ConfigType>,
+  ) {}
 
   @Mutation()
   async signup(
     @Args('input') args: SignUpDto,
     @Context() context: { res: Response },
   ) {
+    const cookieSecret = this.configService.get('COOKIE_SECRET');
     const token = await this.authService.register(args);
-    context.res.cookie('auth_token', token, {
+    context.res.cookie(cookieSecret, token, {
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -31,8 +37,9 @@ export class AuthResolver {
     @Args('input') args: SignInDto,
     @Context() context: { res: Response },
   ) {
+    const cookieSecret = this.configService.get('COOKIE_SECRET');
     const token = await this.authService.login(args);
-    context.res.cookie('auth_token', token, {
+    context.res.cookie(cookieSecret, token, {
       maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
