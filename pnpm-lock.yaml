@@ -156,6 +156,9 @@ importers:
       '@workspace/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       eslint:
         specifier: ^9.18.0
         version: 9.38.0(jiti@2.6.1)
@@ -3596,6 +3599,10 @@ packages:
 
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
+
+  dotenv@17.2.3:
+    resolution: {integrity: sha512-JVUnt+DUIzu87TABbhPmNfVdBDt18BLOWjMUFJMSi/Qqg7NTYtabbvSNJGOJ7afbRuv9D/lngizHtP7QyLQ+9w==}
     engines: {node: '>=12'}
 
   drizzle-kit@0.31.5:
@@ -9610,7 +9617,7 @@ snapshots:
 
   custom-env@2.0.6:
     dependencies:
-      dotenv: 16.6.1
+      dotenv: 17.2.3
       dotenv-expand: 5.1.0
 
   d3-array@3.2.4:
@@ -9748,6 +9755,8 @@ snapshots:
   dotenv@16.4.7: {}
 
   dotenv@16.6.1: {}
+
+  dotenv@17.2.3: {}
 
   drizzle-kit@0.31.5:
     dependencies:
