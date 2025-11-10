@@ -38,4 +38,5 @@ yarn-error.log*
 *.pem
 
 apps/express-api-gql
+pgdata
 
