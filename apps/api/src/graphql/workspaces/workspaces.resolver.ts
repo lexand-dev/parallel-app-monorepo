@@ -10,7 +10,6 @@ import {
 import type { FileUpload } from '../projects/dto/create-project.input';
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 
-import { utapi } from '../../lib/uploathing';
 import { AuthGuard } from '../../guards/auth.guard';
 import { generateInviteCode } from '../..//lib/utils';
 import { WorkspacesService } from './workspaces.service';
@@ -19,6 +18,8 @@ import { CreateWorkspaceInputDto } from './dto/create-workspace.input';
 import { UpdateWorkspaceInputDto } from './dto/update-workspace.input';
 import { File } from 'node:buffer';
 import { MemberRole } from '../members/entities/member.entity';
+import { injectUtapi } from '../../upload/uploathing.module';
+import { UTApi } from 'uploadthing/server';
 
 @UseGuards(AuthGuard)
 @Resolver('Workspace')
@@ -26,6 +27,7 @@ export class WorkspacesResolver {
   constructor(
     private readonly workspacesService: WorkspacesService,
     private readonly membersService: MembersService,
+    @injectUtapi() private readonly utapi: UTApi,
   ) {}
 
   @Query('getWorkspaces')
@@ -123,7 +125,7 @@ export class WorkspacesResolver {
         type: file.mimetype,
       });
 
-      const result = await utapi.uploadFiles(nodeFile);
+      const result = await this.utapi.uploadFiles(nodeFile);
 
       if (!result || result.error) {
         throw new HttpException(
@@ -235,11 +237,11 @@ export class WorkspacesResolver {
         type: file.mimetype,
       });
 
-      const result = await utapi.uploadFiles(nodeFile);
+      const result = await this.utapi.uploadFiles(nodeFile);
 
       if (!result || result.error) {
         throw new HttpException(
-          'Failed to upload image',
+          'Failed to upload image: ' + JSON.stringify(result?.error),
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }

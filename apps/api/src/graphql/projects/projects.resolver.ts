@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 
-import { utapi } from '../../lib/uploathing';
+import { injectUtapi } from '../../upload/uploathing.module';
 import { AuthGuard } from '../../guards/auth.guard';
 import { ProjectsService } from './projects.service';
 import { MembersService } from '../members/members.service';
 import { UpdateProjectInputDto } from './dto/update-project.input';
 import { CreateProjectInputDto } from './dto/create-project.input';
 import { File } from 'node:buffer';
+import { UTApi } from 'uploadthing/server';
 
 @UseGuards(AuthGuard)
 @Resolver('Project')
@@ -15,6 +16,7 @@ export class ProjectsResolver {
   constructor(
     private readonly projectsService: ProjectsService,
     private readonly membersService: MembersService,
+    @injectUtapi() private readonly utapi: UTApi,
   ) {}
 
   @Query('getProjects')
@@ -124,7 +126,7 @@ export class ProjectsResolver {
         type: file.mimetype,
       });
 
-      const result = await utapi.uploadFiles(nodeFile);
+      const result = await this.utapi.uploadFiles(nodeFile);
 
       if (!result || result.error) {
         throw new HttpException(
@@ -207,7 +209,7 @@ export class ProjectsResolver {
         type: file.mimetype,
       });
 
-      const result = await utapi.uploadFiles(nodeFile);
+      const result = await this.utapi.uploadFiles(nodeFile);
 
       if (!result || result.error) {
         throw new HttpException(
