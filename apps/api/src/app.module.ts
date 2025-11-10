@@ -43,7 +43,7 @@ import { AnalyticsModule } from './graphql/analytics/analytics.module';
           playground: false,
           plugins: [ApolloServerPluginLandingPageLocalDefault()],
           // Schema first:
-          typePaths: ['./**/*.graphql'],
+          typePaths: [join(__dirname, './**/*.graphql')],
           definitions: {
             path: join(process.cwd(), 'src/graphql.ts'),
             /* outputAs: 'class', */
