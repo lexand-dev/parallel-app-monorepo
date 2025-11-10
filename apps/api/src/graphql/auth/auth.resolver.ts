@@ -50,7 +50,8 @@ export class AuthResolver {
 
   @Mutation()
   logout(@Context() context: { res: Response }) {
-    context.res.clearCookie('auth_token');
+    const cookieSecret = this.configService.get('COOKIE_SECRET');
+    context.res.clearCookie(cookieSecret);
     return { success: true, message: 'User logged out successfully' };
   }
 
