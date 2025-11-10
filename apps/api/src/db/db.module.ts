@@ -18,7 +18,8 @@ import { DB_CONNECTION } from './db.provider';
         const databaseUrl = config.get('DATABASE_URL')!;
 
         const isLocal =
-          databaseUrl.includes('@db') || databaseUrl.includes('localhost');
+          databaseUrl.includes('@parallel-db') ||
+          databaseUrl.includes('localhost');
 
         if (isLocal) {
           // 🧱 Conexión local (Postgres dentro de Docker)
