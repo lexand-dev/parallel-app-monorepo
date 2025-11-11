@@ -6,12 +6,16 @@ import { UsersService } from '../users/users.service';
 import { SignInDtoType, SignUpDtoType } from './dto/auth.dto';
 import { ConfigService } from '@nestjs/config';
 import { ConfigType } from '../../config/env';
+import { type DB, InjectDb } from '../../db/db.provider';
+import { users } from '../../db/schema';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
+    @InjectDb() private readonly db: DB,
     private readonly configService: ConfigService<ConfigType>,
   ) {}
 
@@ -55,6 +59,22 @@ export class AuthService {
     const payload = { sub: user.id };
     const token = await this.jwtService.signAsync(payload);
 
+    return token;
+  }
+
+  async createGuest() {
+    const id = crypto.randomUUID();
+    const nanoId = nanoid();
+    await this.db.insert(users).values({
+      id,
+      name: 'Guest',
+      email: `${nanoId}@guest.local`,
+      password: `pw-${nanoId}`,
+      isGuest: true,
+    });
+
+    const payload = { sub: id };
+    const token = await this.jwtService.signAsync(payload);
     return token;
   }
 

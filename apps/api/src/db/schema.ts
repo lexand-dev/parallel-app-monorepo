@@ -7,6 +7,7 @@ import {
   timestamp,
   uuid,
   varchar,
+  boolean,
 } from 'drizzle-orm/pg-core';
 
 export const userRoles = pgEnum('user_roles', ['ADMIN', 'MEMBER']);
@@ -23,6 +24,7 @@ export const users = pgTable('users', {
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
   password: varchar({ length: 255 }).notNull(),
+  isGuest: boolean('is_guest').default(false),
   createdAt: timestamp('created_at', { withTimezone: true })
     .defaultNow()
     .notNull(),

@@ -62,4 +62,21 @@ export class AuthResolver {
     console.log('Current user ID:', userId);
     return await this.authService.current(userId);
   }
+
+  @Mutation()
+  async anonymousSignin(@Context() context: { res: Response }) {
+    const token = await this.authService.createGuest();
+
+    const cookieSecret = this.configService.get('COOKIE_SECRET');
+    context.res.cookie(cookieSecret, token, {
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+    return {
+      success: true,
+      message: 'Anonymous user signed in successfully',
+    };
+  }
 }

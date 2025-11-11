@@ -18,6 +18,15 @@ export const SING_IN_MUTATION = gql`
   }
 `;
 
+export const ANONYMOUS_SIGNIN_MUTATION = gql`
+  mutation AnonymousSignin {
+    anonymousSignin {
+      success
+      message
+    }
+  }
+`;
+
 export const LOGOUT_MUTATION = gql`
   mutation Logout {
     logout {

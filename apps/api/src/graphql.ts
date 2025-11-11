@@ -73,6 +73,7 @@ export interface Analytics {
 export interface IMutation {
     signup(input: SignUpInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
     signin(input: SignInInput): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
+    anonymousSignin(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
     logout(): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
     removeMember(memberId: string, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
     updateRole(memberId: string, role: MemberRole, workspaceId: string): Nullable<SuccessResponse> | Promise<Nullable<SuccessResponse>>;
