@@ -2,7 +2,7 @@
   "name": "parallel-app-monorepo",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --affected",
     "dev": "turbo run dev",
     "test": "turbo run test",
     "lint": "turbo run lint",
