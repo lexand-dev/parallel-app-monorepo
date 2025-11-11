@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from '../../guards/auth.guard';
 import { SignInDto, SignUpDto } from './dto/auth.dto';
 import { ConfigService } from '@nestjs/config';
-import { ConfigType } from 'src/config/env';
+import { ConfigType } from '../../config/env';
 
 @Resolver()
 export class AuthResolver {
