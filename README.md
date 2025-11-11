@@ -1,24 +1,20 @@
-# Turborepo starter
+# Parallel App Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+This is a Turborepo monorepo example that demonstrates how to set up and manage multiple applications and packages in a single repository. It includes a NestJS API and a Next.js frontend application, along with shared configurations and utilities.
 
 ## Using this example
 
-Run the following command:
+To use this example, you can either clone the repository or create a new Turborepo monorepo and copy the files over.
 
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
+## Structure
 
 This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@workspace/ui`: a stub React component library shared by both `web` and `docs` applications
+- `api`: a [NestJS](https://nestjs.com/) app
+- `parallel`: a [Next.js](https://nextjs.org/) app
+- `@workspace/ui`: a stub React component library shared by `parallel` applications
 - `@workspace/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@workspace/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
@@ -37,27 +33,25 @@ This Turborepo has some additional tools already setup for you:
 To build all apps and packages, run the following command:
 
 ```
-cd my-turborepo
+cd parallel-app-monorepo
 
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo build
 
 # Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+pnpm run build
 ```
 
 You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
 
 ```
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+turbo build --filter=api-gql
+turbo build --filter=parallel-app
 
 # Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+pnpm run build --filter=api-gql
+pnpm run build --filter=parallel-app
 ```
 
 ### Develop
@@ -65,27 +59,25 @@ pnpm exec turbo build --filter=docs
 To develop all apps and packages, run the following command:
 
 ```
-cd my-turborepo
+cd parallel-app-monorepo
 
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo dev
 
 # Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+pnpm run dev
 ```
 
 You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
 
 ```
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+turbo dev --filter=api-gql
+turbo dev --filter=parallel-app
 
 # Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+pnpm run dev --filter=api-gql
+pnpm run dev --filter=parallel-app
 ```
 
 ### Remote Caching
@@ -98,15 +90,13 @@ Turborepo can use a technique known as [Remote Caching](https://turborepo.com/do
 By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
 
 ```
-cd my-turborepo
+cd parallel-app-monorepo
 
 # With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
 turbo login
 
 # Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+pnpm dlx turbo login
 ```
 
 This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
@@ -118,9 +108,7 @@ Next, you can link your Turborepo to your Remote Cache by running the following 
 turbo link
 
 # Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+pnpm dlx turbo link
 ```
 
 ## Useful Links
