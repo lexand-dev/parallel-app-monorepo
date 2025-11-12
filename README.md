@@ -1,6 +1,15 @@
 # Parallel App Monorepo
 
-This is a Turborepo monorepo example that demonstrates how to set up and manage multiple applications and packages in a single repository. It includes a NestJS API and a Next.js frontend application, along with shared configurations and utilities.
+This is a Turborepo monorepo example that demonstrates how to set up and manage multiple applications and packages in a single repository. It includes a NestJS API with GraphQL support and a Next.js frontend application, along with shared configurations and utilities.
+
+## Features
+
+- 🚀 **NestJS API** with GraphQL endpoint
+- ⚡ **Next.js Frontend** with modern React features
+- 📦 **Shared Packages** for code reuse across applications
+- 🐳 **Docker Support** with multi-service orchestration
+- 🔧 **Development Tools** with hot reloading and type safety
+- 🎯 **Turborepo** for efficient builds and caching
 
 ## Using this example
 
@@ -12,9 +21,9 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `api`: a [NestJS](https://nestjs.com/) app
-- `parallel`: a [Next.js](https://nextjs.org/) app
-- `@workspace/ui`: a stub React component library shared by `parallel` applications
+- `api`: a [NestJS](https://nestjs.com/) app with GraphQL API
+- `parallel`: a [Next.js](https://nextjs.org/) frontend application
+- `@workspace/ui`: a stub React component library shared by applications
 - `@workspace/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@workspace/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
@@ -27,97 +36,100 @@ This Turborepo has some additional tools already setup for you:
 - [TypeScript](https://www.typescriptlang.org/) for static type checking
 - [ESLint](https://eslint.org/) for code linting
 - [Prettier](https://prettier.io) for code formatting
+- [Docker](https://docker.com/) for containerization
+- [Docker Compose](https://docs.docker.com/compose/) for multi-service orchestration
 
-### Build
+## Getting Started
 
-To build all apps and packages, run the following command:
+### Prerequisites
 
-```
+- [Node.js](https://nodejs.org/) (version 18 or later)
+- [pnpm](https://pnpm.io/) package manager
+- [Docker](https://docker.com/) and [Docker Compose](https://docs.docker.com/compose/)
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/lexand-dev/parallel-app-monorepo.git
 cd parallel-app-monorepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-pnpm run build
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+2. Install dependencies:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=api-gql
-turbo build --filter=parallel-app
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-pnpm run build --filter=api-gql
-pnpm run build --filter=parallel-app
+```bash
+pnpm install
 ```
 
-### Develop
+3. Set up environment variables:
 
-To develop all apps and packages, run the following command:
+   **Backend (API):**
 
-```
-cd parallel-app-monorepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-pnpm run dev
+```bash
+cp apps/api/.env.example apps/api/.env
+# Edit apps/api/.env with your database and authentication configuration
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+**Frontend (Next.js):**
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=api-gql
-turbo dev --filter=parallel-app
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-pnpm run dev --filter=api-gql
-pnpm run dev --filter=parallel-app
+```bash
+cp apps/parallel/.env.example apps/parallel/.env
+# Edit apps/parallel/.env with your application URL configuration
 ```
 
-### Remote Caching
+> **Note:** The default configuration is already set up to work with Docker Compose. You only need to modify the environment variables if you're running outside of Docker or need custom settings.
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Development with Docker Compose
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+1. Build and start all services:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd parallel-app-monorepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-pnpm dlx turbo login
+```bash
+docker compose build --no-cache
+docker compose up --build
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+2. Install additional dependencies (if needed):
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-pnpm dlx turbo link
+```bash
+docker compose exec app pnpm add dotenv -D --filter=api-gql
 ```
 
-## Useful Links
+3. Set up the database schema:
 
-Learn more about the power of Turborepo:
+```bash
+docker compose exec app pnpm --filter=api-gql db:push
+```
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+### Useful Docker Commands
+
+- **Stop and remove containers:**
+
+  ```bash
+  docker compose down
+  ```
+
+- **View logs:**
+
+  ```bash
+  docker compose logs -f
+  ```
+
+- **Run database migrations:**
+
+  ```bash
+  docker compose exec app pnpm --filter=api-gql db:generate
+  docker compose exec app pnpm --filter=api-gql db:migrate
+  docker compose exec app pnpm --filter=api-gql db:push
+  ```
+
+- **Access the database container:**
+
+  ```bash
+  docker compose exec db psql -U postgres -d parallel_app_db
+  ```
+
+- **Access the app container:**
+  ```bash
+  docker compose exec app sh
+  ```
