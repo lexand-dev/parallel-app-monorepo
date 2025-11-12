@@ -22,12 +22,12 @@ import { DB_CONNECTION } from './db.provider';
           databaseUrl.includes('localhost');
 
         if (isLocal) {
-          // 🧱 Conexión local (Postgres dentro de Docker)
+          // Local connection (Docker/Postgres)
           const pool = new Pool({ connectionString: databaseUrl });
           return drizzlePg(pool, { schema });
         }
 
-        // ☁️ Conexión remota (Neon/Supabase/Vercel)
+        // Neon connection (serverless)
         const sql = neon(databaseUrl);
         return drizzle(sql, { schema });
       },
