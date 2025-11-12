@@ -17,8 +17,8 @@ FROM node:lts-alpine AS builder
 WORKDIR /app
 COPY --from=installer /app/ .
 COPY --from=pruner /app/out/full .
-ENV TURBO_TOKEN=${TURBO_TOKEN}
-ENV TURBO_TEAM=${TURBO_TEAM}
+ARG TURBO_TOKEN
+ARG TURBO_TEAM
 RUN npm install -g pnpm
 RUN pnpm run build
 
