@@ -1,4 +1,4 @@
-name: Build and Deploy to Railway
+name: Deploy API Docker Image to Docker Hub
 
 on:
   push:
