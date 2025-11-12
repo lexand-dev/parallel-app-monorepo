@@ -8,6 +8,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -46,4 +49,6 @@ jobs:
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway deploy --service ${vars.RAILWAY_SERVICE_ID}
+        run: |
+          railway add --image alexfloresdev/parallel-api:latest
+          railway up --service ${vars.RAILWAY_SERVICE_ID}
