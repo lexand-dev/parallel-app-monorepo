@@ -40,10 +40,10 @@ jobs:
             alexfloresdev/parallel-api:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
 
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
       - name: Deploy to Railway
-        uses: railwayapp/railway-action@v2
-        with:
-          railwayToken: ${{ secrets.RAILWAY_TOKEN }}
-          projectId: ${{ vars.RAILWAY_PROJECT_ID }}
-          serviceId: ${{ vars.RAILWAY_SERVICE_ID }}
-          dockerImage: alexfloresdev/parallel-api:latest
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: railway deploy --service ${vars.RAILWAY_SERVICE_ID}
