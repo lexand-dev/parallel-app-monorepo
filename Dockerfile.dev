@@ -15,8 +15,8 @@ COPY packages/eslint-config/package.json ./packages/eslint-config/
 COPY packages/typescript-config/package.json ./packages/typescript-config/
 COPY packages/ui/package.json ./packages/ui/
 
-RUN pnpm install --recursive
+RUN pnpm install
 
 COPY . .
 
-CMD ["pnpm", "dev"]
+CMD ["pnpm", "run", "dev"]
