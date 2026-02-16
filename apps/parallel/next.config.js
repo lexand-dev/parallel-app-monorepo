@@ -12,9 +12,9 @@ const nextConfig = {
       {
         source: "/api/graphql",
         // Proxy GraphQL requests to the production API endpoint
-        /* destination: `http://localhost:4000/graphql` */
-        destination:
-          "https://parallel-api-production-6f7d.up.railway.app/graphql" // docker deployment
+        destination: `http://localhost:4000/graphql`
+        /* destination:
+          "https://parallel-api-production-6f7d.up.railway.app/graphql" // docker deployment */
       }
     ];
   }

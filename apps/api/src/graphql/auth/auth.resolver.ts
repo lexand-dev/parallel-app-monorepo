@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -11,24 +11,30 @@ import { ConfigType } from '../../config/env';
 
 @Resolver()
 export class AuthResolver {
+  private readonly logger = new Logger(AuthResolver.name);
+
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService<ConfigType>,
   ) {}
+
+  private setSessionCookie(res: Response, token: string) {
+    const cookieSecret = this.configService.get('COOKIE_SECRET');
+    res.cookie(cookieSecret, token, {
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+  }
 
   @Mutation()
   async signup(
     @Args('input') args: SignUpDto,
     @Context() context: { res: Response },
   ) {
-    const cookieSecret = this.configService.get('COOKIE_SECRET');
     const token = await this.authService.register(args);
-    context.res.cookie(cookieSecret, token, {
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+    this.setSessionCookie(context.res, token);
     return { success: true, message: 'User registered successfully' };
   }
 
@@ -37,14 +43,8 @@ export class AuthResolver {
     @Args('input') args: SignInDto,
     @Context() context: { res: Response },
   ) {
-    const cookieSecret = this.configService.get('COOKIE_SECRET');
     const token = await this.authService.login(args);
-    context.res.cookie(cookieSecret, token, {
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+    this.setSessionCookie(context.res, token);
     return { success: true, message: 'User signed in successfully' };
   }
 
@@ -59,21 +59,14 @@ export class AuthResolver {
   @Query()
   async current(@Context() context: any) {
     const userId = context.user.sub;
-    console.log('Current user ID:', userId);
+    this.logger.log(`Fetching current user: ${userId}`);
     return await this.authService.current(userId);
   }
 
   @Mutation()
   async anonymousSignin(@Context() context: { res: Response }) {
     const token = await this.authService.createGuest();
-
-    const cookieSecret = this.configService.get('COOKIE_SECRET');
-    context.res.cookie(cookieSecret, token, {
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-    });
+    this.setSessionCookie(context.res, token);
     return {
       success: true,
       message: 'Anonymous user signed in successfully',
